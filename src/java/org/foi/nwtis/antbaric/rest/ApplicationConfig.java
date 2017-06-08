@@ -29,7 +29,9 @@ public class ApplicationConfig extends Application {
      * If required, comment out calling this method in getClasses().
      */
     private void addRestResourceClasses(Set<Class<?>> resources) {
+        resources.add(org.foi.nwtis.antbaric.rest.DeviceResource.class);
         resources.add(org.foi.nwtis.antbaric.rest.DevicesResource.class);
+        resources.add(org.foi.nwtis.antbaric.rest.UserResource.class);
         resources.add(org.foi.nwtis.antbaric.rest.UsersResource.class);
     }
     

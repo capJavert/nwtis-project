@@ -132,21 +132,21 @@ public abstract class Model<T> {
         return models;
     }
 
-    public void setGetAllStatement() throws SQLException {
+    protected void setGetAllStatement() throws SQLException {
         this.preparedStatement = this.connection.prepareStatement("SELECT * FROM " + this.tableName);
     }
 
-    public void setGetAllStatement(String name, Object value) throws SQLException {
+    protected void setGetAllStatement(String name, Object value) throws SQLException {
         this.preparedStatement = this.connection.prepareStatement("SELECT * FROM " + this.tableName + " WHERE  " + name + "=?");
         this.preparedStatement.setObject(1, value);
     }
 
-    public void setGetStatement(Integer primaryKey) throws SQLException {
+    protected void setGetStatement(Integer primaryKey) throws SQLException {
         this.preparedStatement = this.connection.prepareStatement("SELECT * FROM " + this.tableName + " WHERE id=?");
         this.preparedStatement.setInt(1, primaryKey);
     }
 
-    public void setGetStatement(String name, Object value) throws SQLException {
+    protected void setGetStatement(String name, Object value) throws SQLException {
        this.preparedStatement = this.connection.prepareStatement("SELECT * FROM " + this.tableName + " WHERE  " + name + "=? LIMIT 1");
         this.preparedStatement.setObject(1, value);
     }
