@@ -13,7 +13,10 @@ import java.util.logging.Logger;
 import javax.jws.WebService;
 import javax.jws.WebMethod;
 import javax.jws.WebParam;
+import org.foi.nwtis.antbaric.models.Device;
 import org.foi.nwtis.antbaric.models.Meteo;
+import org.foi.nwtis.antbaric.services.GoogleMapsService;
+import org.foi.nwtis.antbaric.services.OpenWeatherService;
 
 /**
  *
@@ -48,7 +51,7 @@ public class MeteoWS {
     public ArrayList<Meteo> getDeviceMeteoForInterval(@WebParam(name = "device") final Integer deviceId,
             @WebParam(name = "from") final Long fromInterval,
             @WebParam(name = "to") final Long toInterval) {
-        
+
         try {
             return new Meteo().findAll("id", deviceId, new Timestamp(fromInterval), new Timestamp(toInterval));
         } catch (SQLException ex) {
@@ -59,15 +62,34 @@ public class MeteoWS {
     }
 
     @WebMethod(operationName = "getLiveDeviceMeteo")
-    public ArrayList<Meteo> getLiveDeviceMeteo(@WebParam(name = "device") final Integer deviceId) {
-        // TODO: fetch data from openweathermap.org API
+    public Meteo getLiveDeviceMeteo(@WebParam(name = "device") final Integer deviceId) {
+        try {
+            Device device = new Device().findOne(deviceId);
+
+            OpenWeatherService openWeatherService = new OpenWeatherService();
+
+            Meteo meteo = openWeatherService.getRealTimeWeather(device.latitude.toString(), device.longitude.toString());
+            meteo.id = deviceId;
+            
+            return meteo;
+        } catch (SQLException ex) {
+            Logger.getLogger(MeteoWS.class.getName()).log(Level.SEVERE, null, ex);
+        }
 
         return null;
     }
 
     @WebMethod(operationName = "getDeviceAddress")
-    public ArrayList<Meteo> getDeviceAddress(@WebParam(name = "device") final Integer deviceId) {
-        // TODO: fetch address from google.com API
+    public String getDeviceAddress(@WebParam(name = "device") final Integer deviceId) {
+        try {
+            Device device = new Device().findOne(deviceId);
+
+            GoogleMapsService googleMapsService = new GoogleMapsService();
+
+            return googleMapsService.getAddress(device.longitude.toString(), device.latitude.toString());
+        } catch (SQLException ex) {
+            Logger.getLogger(MeteoWS.class.getName()).log(Level.SEVERE, null, ex);
+        }
 
         return null;
     }

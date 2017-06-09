@@ -17,18 +17,18 @@ public class Meteo extends Model<Meteo> {
 
     private Integer id_meteo;
     public Integer id;
-    public String adresa_stranica;
-    public Float latitude;
-    public Float longitude;
+    public String adresa_stanice;
+    public Double latitude;
+    public Double longitude;
     public String vrijeme;
     public String vrijeme_opis;
-    public Float temp;
-    public Float temp_min;
-    public Float temp_max;
-    public Float vlaga;
-    public Float tlak;
-    public Float vjetar;
-    public Float vjetar_smjer;
+    public Double temp;
+    public Double temp_min;
+    public Double temp_max;
+    public Double vlaga;
+    public Double tlak;
+    public Double vjetar;
+    public Double vjetar_smjer;
     public String preuzeto;
 
     public Meteo() {
