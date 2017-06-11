@@ -24,7 +24,7 @@ import org.foi.nwtis.antbaric.threads.MeteoFetcher;
 public class ApplicationListener implements ServletContextListener {
 
     public static ServletContext context = null;
-    private MeteoFetcher meteoFetcher = null;
+    private static MeteoFetcher meteoFetcher = null;
     Konfiguracija config;
 
     @Override
@@ -48,13 +48,12 @@ public class ApplicationListener implements ServletContextListener {
 
         meteoFetcher = new MeteoFetcher();
         meteoFetcher.start();
-        
-        /*new Thread(
+
+        new Thread(
                 () -> {
                     Server server = new Server();
                     server.start(false);
-        }).start();*/
-
+        }).start();
     }
 
     @Override
@@ -66,5 +65,13 @@ public class ApplicationListener implements ServletContextListener {
 
     public static ServletContext getContext() {
         return context;
+    }
+
+    public static void killMeteoFetcher() {
+        meteoFetcher.interrupt();
+    }
+
+    public static void setPause(Boolean paused) {
+        meteoFetcher.setPaused(paused);
     }
 }

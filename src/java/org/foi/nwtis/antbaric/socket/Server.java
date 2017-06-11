@@ -15,7 +15,6 @@ import org.foi.nwtis.antbaric.web.listeners.ApplicationListener;
 public class Server {
 
     public static final List<HandlerThread> THREADS = new ArrayList<>();
-    ;
     public static Status status;
 
     public static String getStatus() {
@@ -53,7 +52,6 @@ public class Server {
             serverSocket = new ServerSocket(port);
 
             while (true) {
-                System.out.println("krenulo");
                 Socket socket = serverSocket.accept();
 
                 this.addHandler(socket);

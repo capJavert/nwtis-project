@@ -25,32 +25,32 @@ import org.foi.nwtis.dkermek.ws.serveri.Uredjaj;
  * @author javert
  */
 public class HandlerThread extends Thread {
-
+    
     private final Socket socket;
     private final ServletContext context;
     private final Konfiguracija config;
-
+    
     public HandlerThread(Socket socket) {
         this.socket = socket;
         this.context = (ServletContext) ApplicationListener.getContext();
         this.config = (Konfiguracija) this.context.getAttribute("main-config");
     }
-
+    
     @Override
     public void interrupt() {
         super.interrupt();
     }
-
+    
     @Override
     public void run() {
         StringBuilder command = new StringBuilder();
         InputStream inputStream = null;
         OutputStream outputStream = null;
-
+        
         try {
             inputStream = socket.getInputStream();
             outputStream = socket.getOutputStream();
-
+            
             while (true) {
                 int znak = inputStream.read();
                 if (znak == -1) {
@@ -59,16 +59,15 @@ public class HandlerThread extends Thread {
                     command.append((char) znak);
                 }
             }
-
+            
             Matcher matcher = SyntaxValidator.validate(command.toString());
             if (matcher != null && new User().authenticate(matcher.group(1), matcher.group(2)) != null) {
-                System.out.println("authenticated");
-
+                
                 IoTMasterWSClient wsClient = new IoTMasterWSClient(
                         this.config.dajPostavku("ws.username"),
                         this.config.dajPostavku("ws.password")
                 );
-
+                
                 switch (matcher.group(3)) {
                     case "IoT_Master":
                         switch (matcher.group(4)) {
@@ -110,7 +109,7 @@ public class HandlerThread extends Thread {
                                 break;
                             case "STATUS":
                                 StatusKorisnika groupStatus = wsClient.dajStatusGrupeIoT();
-
+                                
                                 switch (groupStatus) {
                                     case AKTIVAN:
                                         outputStream.write("OK 25;".getBytes());
@@ -125,13 +124,13 @@ public class HandlerThread extends Thread {
                                 break;
                             case "LIST":
                                 List<Uredjaj> devices = wsClient.dajSveUredjajeGrupe();
-
+                                
                                 String output = "OK 10; {";
-
+                                
                                 for (Uredjaj device : devices) {
                                     output = output.concat("{IoT " + String.valueOf(device.getId()) + " " + device.getNaziv());
                                 }
-
+                                
                                 outputStream.write(output.concat("};").getBytes());
                         }
                         break;
@@ -160,7 +159,7 @@ public class HandlerThread extends Thread {
                                 break;
                             case "STATUS":
                                 StatusUredjaja deviceStatus = wsClient.dajStatusUredjajaGrupe(Integer.parseInt(matcher.group(4)));
-
+                                
                                 switch (deviceStatus) {
                                     case AKTIVAN:
                                         outputStream.write("OK 35;".getBytes());
@@ -172,9 +171,9 @@ public class HandlerThread extends Thread {
                                         outputStream.write("OK 00;".getBytes());
                                 }
                                 break;
-                            default: 
-                                if(wsClient.dodajNoviUredjajGrupi(
-                                        Integer.parseInt(matcher.group(4)), 
+                            default:
+                                if (wsClient.dodajNoviUredjajGrupi(
+                                        Integer.parseInt(matcher.group(4)),
                                         matcher.group(6),
                                         matcher.group(7)
                                 )) {
@@ -192,6 +191,7 @@ public class HandlerThread extends Thread {
                                 } else {
                                     Server.setStatus("PAUSE");
                                     outputStream.write("OK 10;".getBytes());
+                                    ApplicationListener.setPause(true);
                                 }
                                 break;
                             case "START":
@@ -200,6 +200,7 @@ public class HandlerThread extends Thread {
                                 } else {
                                     Server.setStatus("START");
                                     outputStream.write("OK 10;".getBytes());
+                                    ApplicationListener.setPause(false);
                                 }
                                 break;
                             case "STOP":
@@ -208,6 +209,7 @@ public class HandlerThread extends Thread {
                                 } else {
                                     Server.setStatus("STOP");
                                     outputStream.write("OK 10;".getBytes());
+                                    ApplicationListener.killMeteoFetcher();
                                 }
                                 break;
                             default:
@@ -243,17 +245,17 @@ public class HandlerThread extends Thread {
             }
         }
     }
-
+    
     private Uredjaj findDeviceById(Integer id, List<Uredjaj> devices) {
         for (Uredjaj device : devices) {
             if (device.getId() == id) {
                 return device;
             }
         }
-
+        
         return null;
     }
-
+    
     @Override
     public synchronized void start() {
         super.start();
