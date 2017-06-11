@@ -8,7 +8,6 @@ package org.foi.nwtis.antbaric.models;
 import java.lang.reflect.Field;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Timestamp;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -19,11 +18,10 @@ import java.util.logging.Logger;
 public class Log extends Model {
 
     private Integer id;
-    private String korisnik;
-    private String url;
-    private String ipadresa;
-    private Integer trajanje;
-    private Integer status;
+    public String korisnik;
+    public String command;
+    public String ipadresa;
+    public Long trajanje;
 
     public Log() {
         super();
@@ -31,14 +29,13 @@ public class Log extends Model {
         this.tableName = "dnevnik";
     }
     
-    public void write(String user, String url, String ip, Integer trajanje, Integer status) throws SQLException {
+    public Boolean write(String user, String command, String ip, Long trajanje) throws SQLException {
         this.korisnik = user;
-        this.url = url;
+        this.command = command;
         this.ipadresa = ip;
         this.trajanje = trajanje;
-        this.status = status;
         
-        this.save();
+        return this.create();
     }
     
     @Override
@@ -52,13 +49,13 @@ public class Log extends Model {
             result.next();
         }
 
-        User model = new User();
+        Log model = new Log();
 
-        for (Field field : User.class.getFields()) {
+        for (Field field : Log.class.getFields()) {
             try {
                 field.set(model, result.getObject(field.getName(), field.getType()));
             } catch (IllegalArgumentException | IllegalAccessException ex) {
-                Logger.getLogger(User.class.getName()).log(Level.SEVERE, null, ex);
+                Logger.getLogger(Log.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
 
@@ -67,14 +64,34 @@ public class Log extends Model {
 
     @Override
     void setCreateStatement() throws SQLException {
-        this.preparedStatement = this.connection.prepareStatement("INSERT INTO " + this.tableName + " VALUES (? ? ? ? ? ?)");
+        String fields = "";
+        String values = "";
 
-        this.preparedStatement.setString(1, this.korisnik);
-        this.preparedStatement.setString(2, this.url);
-        this.preparedStatement.setString(3, this.ipadresa);
-        this.preparedStatement.setTimestamp(4, new Timestamp(System.currentTimeMillis()));
-        this.preparedStatement.setInt(5, this.trajanje);
-        this.preparedStatement.setInt(6, this.status);
+        for (Field field : Log.class.getFields()) {
+            try {
+                if (!fields.isEmpty()) {
+                    fields += ("," + field.getName());
+                    values += ",?";
+                } else {
+                    fields += field.getName();
+                    values += "?";
+                }
+
+            } catch (IllegalArgumentException ex) {
+                Logger.getLogger(Log.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+
+        this.preparedStatement = this.connection.prepareStatement("INSERT INTO " + this.tableName + " (" + fields + ") VALUES (" + values + ")");
+
+        int i = 1;
+        for (Field field : Log.class.getFields()) {
+            try {
+                this.preparedStatement.setObject(i++, field.get(this));
+            } catch (IllegalArgumentException | IllegalAccessException ex) {
+                Logger.getLogger(Log.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
     }
 
     @Override

@@ -5,7 +5,6 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.Socket;
 import java.sql.SQLException;
-import java.util.Date;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -15,6 +14,7 @@ import org.foi.nwtis.antbaric.components.SyntaxValidator;
 import org.foi.nwtis.antbaric.helpers.MailHelper;
 import org.foi.nwtis.antbaric.helpers.MiscHelper;
 import org.foi.nwtis.antbaric.konfiguracije.Konfiguracija;
+import org.foi.nwtis.antbaric.models.Log;
 import org.foi.nwtis.antbaric.models.User;
 import org.foi.nwtis.antbaric.socket.Server;
 import org.foi.nwtis.antbaric.web.listeners.ApplicationListener;
@@ -32,6 +32,8 @@ public class HandlerThread extends Thread {
     private final Socket socket;
     private final ServletContext context;
     private final Konfiguracija config;
+    private String username = "PUBLIC";
+    private Long workTime;
     
     public HandlerThread(Socket socket) {
         this.socket = socket;
@@ -51,6 +53,8 @@ public class HandlerThread extends Thread {
         OutputStream outputStream = null;
         
         try {
+            this.workTime = System.currentTimeMillis();
+            
             inputStream = socket.getInputStream();
             outputStream = socket.getOutputStream();
             
@@ -65,6 +69,7 @@ public class HandlerThread extends Thread {
             
             Matcher matcher = SyntaxValidator.validate(command.toString());
             if (matcher != null && new User().authenticate(matcher.group(1), matcher.group(2)) != null) {
+                this.username = matcher.group(1);
                 
                 IoTMasterWSClient wsClient = new IoTMasterWSClient(
                         this.config.dajPostavku("ws.username"),
@@ -231,8 +236,12 @@ public class HandlerThread extends Thread {
                         }
                 }
             } else {
+                this.username = "PUBLIC";
+                
                 outputStream.write("ERR 10".getBytes());
             }
+            
+            new Log().write(this.username, command.toString(), this.socket.getRemoteSocketAddress().toString(), System.currentTimeMillis()-this.workTime);
             outputStream.flush();
         } catch (IOException | SQLException ex) {
             Logger.getLogger(HandlerThread.class.getName()).log(Level.SEVERE, null, ex);

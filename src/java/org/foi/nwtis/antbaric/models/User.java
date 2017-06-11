@@ -24,12 +24,18 @@ public class User extends Model<User> {
         this.tableName = "users";
     }
 
-    public User authenticate(String username, String password) throws SQLException {
-        this.preparedStatement = this.connection.prepareStatement("SELECT * FROM " + this.tableName + " WHERE username = ? AND password = ?");
-        this.preparedStatement.setString(1, username);
-        this.preparedStatement.setString(2, password);
+    public User authenticate(String username, String password) {
+        try {
+            this.preparedStatement = this.connection.prepareStatement("SELECT * FROM " + this.tableName + " WHERE username = ? AND password = ?");
+            this.preparedStatement.setString(1, username);
+            this.preparedStatement.setString(2, password);
 
-        return (User) this.mapResult(this.preparedStatement.executeQuery(), false);
+            return (User) this.mapResult(this.preparedStatement.executeQuery(), false);
+        } catch (SQLException ex) {
+            Logger.getLogger(User.class.getName()).log(Level.SEVERE, null, ex);
+
+            return null;
+        }
     }
 
     @Override

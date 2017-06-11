@@ -62,7 +62,7 @@ public class Server {
             try {
                 serverSocket.close();
             } catch (IOException ex) {
-                System.out.println("NO OPEN");
+                System.out.println("SOCKET_PORT_NOT_OPEN");
             }
         }
     }

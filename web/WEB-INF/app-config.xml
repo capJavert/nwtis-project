@@ -18,13 +18,13 @@
 <entry key="thread.interval">2000</entry>
 
 <entry key="socket.server">localhost</entry>
-<entry key="socket.port">9999</entry>
+<entry key="socket.port">9966</entry>
 
 <entry key="mail.server">127.0.0.1</entry>
 <entry key="mail.port">143</entry>
 <entry key="mail.subject">NWTiS poruka</entry>
 <entry key="mail.from">servis@localhost</entry>
-<entry key="mail.to">antbaric@foi.hr</entry>
+<entry key="mail.to">ante.baric3@gmail.com</entry>
 <entry key="mail.usernameThread">servis@nwtis.nastava.foi.hr</entry>
 <entry key="mail.passwordThread">123456~</entry>
 
