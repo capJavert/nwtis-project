@@ -4,8 +4,11 @@ import java.lang.reflect.Field;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Timestamp;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import org.foi.nwtis.antbaric.components.Location;
 
 /**
  *
@@ -118,4 +121,20 @@ public class Device extends Model<Device> {
         this.preparedStatement.setObject(i++, this.oldId);
     }
 
+    public List<Location> getUniqueLocations() throws SQLException {
+        this.preparedStatement = this.connection.prepareStatement("SELECT DISTINCT latitude, longitude FROM " + this.tableName);
+
+        ResultSet result = this.preparedStatement.executeQuery();
+        
+        ArrayList<Location> locations = new ArrayList<>();
+
+        while (result.next()) {
+            locations.add(new Location(
+                String.valueOf(result.getFloat("latitude")),
+                String.valueOf(result.getFloat("longitude"))
+            ));
+        }
+
+        return locations;
+    }
 }

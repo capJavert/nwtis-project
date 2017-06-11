@@ -100,8 +100,8 @@ class Main {
     Double temp;
     private Double pressure;
     private Double humidity;
-    private Double tempMin;
-    private Double tempMax;
+    private Double temp_min;
+    private Double temp_max;
 
     Double getTemp() {
         return temp;
@@ -128,19 +128,19 @@ class Main {
     }
 
     Double getTempMin() {
-        return tempMin;
+        return temp_min;
     }
 
     void setTempMin(Double tempMin) {
-        this.tempMin = tempMin;
+        this.temp_min = tempMin;
     }
 
     Double getTempMax() {
-        return tempMax;
+        return temp_max;
     }
 
     void setTempMax(Double tempMax) {
-        this.tempMax = tempMax;
+        this.temp_max = tempMax;
     }
 
 }

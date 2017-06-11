@@ -30,7 +30,7 @@ public class DbManager {
             }
 
             try {
-                DbManager.connection = DriverManager.getConnection(config.getServerDatabase() + config.getUserDatabase(),
+                DbManager.connection = DriverManager.getConnection(config.getServerDatabase() + config.getUserDatabase() + "?characterEncoding=utf8",
                         config.getUserUsername(),
                         config.getUserPassword());
             } catch (SQLException ex) {

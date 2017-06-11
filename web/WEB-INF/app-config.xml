@@ -14,8 +14,8 @@
 <entry key="driver.database.derby">org.apache.derby.jdbc.ClientDriver</entry>
 <entry key="driver.database.postgresql">org.postgresql.Driver</entry>
 
-<entry key="apikey">f98a662b69976b9c2d8f319752791d30</entry>
-<entry key="thread.interval">2000</entry>
+<entry key="apikey">e4e86f9d64f40ed5ab006fa8c9f40354</entry>
+<entry key="thread.interval">60000</entry>
 
 <entry key="socket.server">localhost</entry>
 <entry key="socket.port">9999</entry>

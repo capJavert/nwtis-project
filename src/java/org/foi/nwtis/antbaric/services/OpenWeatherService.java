@@ -1,7 +1,10 @@
 package org.foi.nwtis.antbaric.services;
 
 import java.sql.Timestamp;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.servlet.ServletContext;
+import javax.ws.rs.BadRequestException;
 import javax.ws.rs.client.Client;
 import javax.ws.rs.client.ClientBuilder;
 import javax.ws.rs.client.WebTarget;
@@ -59,25 +62,34 @@ public class OpenWeatherService {
         webResource = webResource.queryParam("units", "metric");
         webResource = webResource.queryParam("APIKEY", this.apiKey);
 
-        String response = webResource.request(MediaType.APPLICATION_JSON).get(String.class);
+        try {
+            String response = webResource.request(MediaType.APPLICATION_JSON).get(String.class);
 
-        OWResponse responseObject = JsonHelper.decode(response, OWResponse.class);
-        
-        Meteo meteo = new Meteo();
-        
-        meteo.latitude = Double.parseDouble(latitude);
-        meteo.longitude = Double.parseDouble(longitude);
-        meteo.preuzeto = new Timestamp(System.currentTimeMillis()).toString();
-        meteo.temp = responseObject.getTemp();
-        meteo.temp_max = responseObject.getTempMax();
-        meteo.temp_min = responseObject.getTempMin();
-        meteo.tlak = responseObject.getPreassure();
-        meteo.vjetar = responseObject.getWind();
-        meteo.vjetar_smjer = responseObject.getWindDirection();
-        meteo.vlaga = responseObject.getHumidity();
-        meteo.vrijeme = responseObject.getWeather();
-        meteo.vrijeme_opis = responseObject.getWeatherDescription();
+            OWResponse responseObject = JsonHelper.decode(response, OWResponse.class);
 
-        return meteo;
+            Meteo meteo = new Meteo();
+
+            meteo.latitude = Double.parseDouble(latitude);
+            meteo.longitude = Double.parseDouble(longitude);
+            meteo.preuzeto = new Timestamp(System.currentTimeMillis()).toString();
+            meteo.temp = responseObject.getTemp();
+            meteo.temp_max = responseObject.getTempMax();
+            meteo.temp_min = responseObject.getTempMin();
+            meteo.tlak = responseObject.getPreassure();
+            meteo.vjetar = responseObject.getWind();
+            meteo.vjetar_smjer = responseObject.getWindDirection();
+            meteo.vlaga = responseObject.getHumidity();
+            meteo.vrijeme = responseObject.getWeather();
+            meteo.vrijeme_opis = responseObject.getWeatherDescription();
+            
+            GoogleMapsService googleMapsService = new GoogleMapsService();
+            meteo.adresa_stanice = googleMapsService.getAddress(longitude, latitude);
+
+            return meteo;
+        } catch (BadRequestException ex) {
+            Logger.getLogger(OpenWeatherService.class.getName()).log(Level.SEVERE, null, ex);
+            
+            throw new NullPointerException();
+        }
     }
 }

@@ -46,8 +46,9 @@ public class ApplicationListener implements ServletContextListener {
             Logger.getLogger(ApplicationListener.class.getName()).log(Level.SEVERE, null, ex);
         }
 
-        //meteoFetcher = new MeteoFetcher();
-        //meteoFetcher.start();
+        meteoFetcher = new MeteoFetcher();
+        meteoFetcher.start();
+        
         /*new Thread(
                 () -> {
                     Server server = new Server();
