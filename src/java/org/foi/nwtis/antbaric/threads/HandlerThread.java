@@ -5,12 +5,15 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.Socket;
 import java.sql.SQLException;
+import java.util.Date;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.regex.Matcher;
 import javax.servlet.ServletContext;
 import org.foi.nwtis.antbaric.components.SyntaxValidator;
+import org.foi.nwtis.antbaric.helpers.MailHelper;
+import org.foi.nwtis.antbaric.helpers.MiscHelper;
 import org.foi.nwtis.antbaric.konfiguracije.Konfiguracija;
 import org.foi.nwtis.antbaric.models.User;
 import org.foi.nwtis.antbaric.socket.Server;
@@ -67,6 +70,8 @@ public class HandlerThread extends Thread {
                         this.config.dajPostavku("ws.username"),
                         this.config.dajPostavku("ws.password")
                 );
+                
+                MailHelper.send(command.toString() + "\\r\\n" + MiscHelper.currentDate("dd.MM.yyyy hh.mm.ss.zzz"));
                 
                 switch (matcher.group(3)) {
                     case "IoT_Master":
