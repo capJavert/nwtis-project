@@ -31,6 +31,8 @@
 <entry key="ws.username">antbaric</entry>
 <entry key="ws.password">s99BW</entry>
 
+<entry key="ui.perPage">10</entry>
+
 <entry key="mail.server">127.0.0.1</entry>
 <entry key="mail.port">143</entry>
 <entry key="mail.usernameThread">servis@nwtis.nastava.foi.hr</entry>

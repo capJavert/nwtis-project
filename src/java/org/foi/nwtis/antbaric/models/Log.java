@@ -15,37 +15,58 @@ import java.util.logging.Logger;
  *
  * @author javert
  */
-public class Log extends Model {
+public class Log extends Model<Log> {
 
     private Integer id;
     public String korisnik;
-    public String command;
+    public String data;
     public String ipadresa;
     public Long trajanje;
+    public String vrijeme;
 
     public Log() {
         super();
 
         this.tableName = "dnevnik";
     }
-    
+
+    public String getVrijeme() {
+        return vrijeme;
+    }
+
+    public String getKorisnik() {
+        return korisnik;
+    }
+
+    public String getData() {
+        return data;
+    }
+
+    public String getIpadresa() {
+        return ipadresa;
+    }
+
+    public Long getTrajanje() {
+        return trajanje;
+    }
+
     public Boolean write(String user, String command, String ip, Long trajanje) throws SQLException {
         this.korisnik = user;
-        this.command = command;
+        this.data = command;
         this.ipadresa = ip;
         this.trajanje = trajanje;
-        
+
         return this.create();
     }
-    
+
     @Override
-    Integer getPrimaryKey() {
+    public Integer getPrimaryKey() {
         return this.id;
     }
 
     @Override
-    Model mapResult(ResultSet result, Boolean batch) throws SQLException {
-          if (!batch) {
+    Log mapResult(ResultSet result, Boolean batch) throws SQLException {
+        if (!batch) {
             result.next();
         }
 
@@ -58,6 +79,8 @@ public class Log extends Model {
                 Logger.getLogger(Log.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
+
+        model.id = result.getInt("id");
 
         return model;
     }

@@ -167,4 +167,61 @@ public class Meteo extends Model<Meteo> {
         this.preparedStatement.setTimestamp(2, from);
         this.preparedStatement.setTimestamp(3, to);
     }
+
+    public Integer getId() {
+        return id;
+    }
+
+    public String getAdresa_stanice() {
+        return adresa_stanice;
+    }
+
+    public Double getLatitude() {
+        return latitude;
+    }
+
+    public Double getLongitude() {
+        return longitude;
+    }
+
+    public String getVrijeme() {
+        return vrijeme;
+    }
+
+    public String getVrijeme_opis() {
+        return vrijeme_opis;
+    }
+
+    public Double getTemp() {
+        return temp;
+    }
+
+    public Double getTemp_min() {
+        return temp_min;
+    }
+
+    public Double getTemp_max() {
+        return temp_max;
+    }
+
+    public Double getVlaga() {
+        return vlaga;
+    }
+
+    public Double getTlak() {
+        return tlak;
+    }
+
+    public Double getVjetar() {
+        return vjetar;
+    }
+
+    public Double getVjetar_smjer() {
+        return vjetar_smjer;
+    }
+
+    public String getPreuzeto() {
+        return preuzeto;
+    }
+    
 }

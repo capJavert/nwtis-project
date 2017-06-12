@@ -8,6 +8,10 @@
         <param-name>configuration</param-name>
         <param-value>app-config.xml</param-value>
     </context-param>
+    <context-param>
+        <param-name>primefaces.THEME</param-name>
+        <param-value>cupertino</param-value>
+    </context-param>
     <listener>
         <listener-class>com.sun.xml.ws.transport.http.servlet.WSServletContextListener</listener-class>
     </listener>
@@ -23,7 +27,7 @@
     </servlet>
     <servlet-mapping>
         <servlet-name>Faces Servlet</servlet-name>
-        <url-pattern>/faces/*</url-pattern>
+        <url-pattern>/view/*</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>MeteoWS</servlet-name>
@@ -35,6 +39,6 @@
         </session-timeout>
     </session-config>
     <welcome-file-list>
-        <welcome-file>faces/index.xhtml</welcome-file>
+        <welcome-file>faces/users.xhtml</welcome-file>
     </welcome-file-list>
 </web-app>

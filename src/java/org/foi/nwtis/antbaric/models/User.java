@@ -24,6 +24,14 @@ public class User extends Model<User> {
         this.tableName = "users";
     }
 
+    public String getUsername() {
+        return username;
+    }
+
+    public String getName() {
+        return name;
+    }
+    
     public User authenticate(String username, String password) {
         try {
             this.preparedStatement = this.connection.prepareStatement("SELECT * FROM " + this.tableName + " WHERE username = ? AND password = ?");
@@ -58,6 +66,8 @@ public class User extends Model<User> {
                 Logger.getLogger(User.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
+        
+        model.id = result.getInt("id");
 
         return model;
     }
