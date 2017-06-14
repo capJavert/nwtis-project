@@ -1,12 +1,10 @@
 package org.foi.nwtis.antbaric.controllers;
 
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
-import javax.faces.bean.ViewScoped;
 import javax.servlet.ServletContext;
 import org.foi.nwtis.antbaric.konfiguracije.Konfiguracija;
 import org.foi.nwtis.antbaric.models.Log;
@@ -17,7 +15,6 @@ import org.foi.nwtis.antbaric.web.listeners.ApplicationListener;
  * @author javert
  */
 @ManagedBean(name = "socketLogController")
-@ViewScoped
 public class SocketLogController extends Controller<Log> {
 
     @PostConstruct

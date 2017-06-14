@@ -28,6 +28,7 @@
     <servlet-mapping>
         <servlet-name>Faces Servlet</servlet-name>
         <url-pattern>/view/*</url-pattern>
+         <url-pattern>/</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>MeteoWS</servlet-name>
@@ -39,6 +40,33 @@
         </session-timeout>
     </session-config>
     <welcome-file-list>
-        <welcome-file>faces/users.xhtml</welcome-file>
+        <welcome-file>view/admin/users.xhtml</welcome-file>
     </welcome-file-list>
+    <security-constraint>
+        <display-name>nwtis</display-name>
+        <web-resource-collection>
+            <web-resource-name>baja</web-resource-name>
+            <description>Prijavljeni korisnik</description>
+            <url-pattern>/view/admin/*</url-pattern>
+        </web-resource-collection>
+        <auth-constraint>
+            <description>baja</description>
+            <role-name>baja</role-name>
+        </auth-constraint>
+        <user-data-constraint>
+            <description>TLS</description>
+            <transport-guarantee>CONFIDENTIAL</transport-guarantee>
+        </user-data-constraint>
+    </security-constraint>
+    <login-config>
+        <auth-method>FORM</auth-method>
+        <form-login-config>
+            <form-login-page>/login.xhtml</form-login-page>
+            <form-error-page>/error.xhtml</form-error-page>
+        </form-login-config>
+    </login-config>
+    <security-role>
+        <description>Prijavljeni korisnik</description>
+        <role-name>baja</role-name>
+    </security-role>
 </web-app>

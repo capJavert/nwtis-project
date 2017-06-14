@@ -17,7 +17,6 @@ import org.foi.nwtis.antbaric.web.listeners.ApplicationListener;
  * @author javert
  */
 @ManagedBean(name = "wsLogController")
-@ViewScoped
 public class WSLogController extends Controller<Log> {
 
     @PostConstruct
