@@ -24,7 +24,7 @@ import org.foi.nwtis.antbaric.web.listeners.ApplicationListener;
  */
 public class MeteoFetcher extends Thread {
 
-    private Boolean run = true;
+    private Boolean run = false;
     private Boolean paused = false;
 
     public void setPaused(Boolean paused) {
@@ -75,12 +75,11 @@ public class MeteoFetcher extends Thread {
             }
 
             try {
-                //System.out.println("...");
+                System.out.println("Fetched..");
                 Thread.sleep(interval);
             } catch (InterruptedException ex) {
                 Logger.getLogger(MeteoFetcher.class.getName()).log(Level.SEVERE, null, ex);
             }
-            break; //TODO: remove before presentation
         }
     }
 

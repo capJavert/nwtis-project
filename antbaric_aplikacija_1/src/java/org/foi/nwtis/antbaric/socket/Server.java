@@ -12,10 +12,11 @@ import org.foi.nwtis.antbaric.konfiguracije.Konfiguracija;
 import org.foi.nwtis.antbaric.threads.HandlerThread;
 import org.foi.nwtis.antbaric.web.listeners.ApplicationListener;
 
-public class Server {
+public class Server extends Thread {
 
     public static final List<HandlerThread> THREADS = new ArrayList<>();
     public static Status status;
+    private ServerSocket socket;
 
     public static String getStatus() {
         return status.get();
@@ -25,45 +26,47 @@ public class Server {
         status.set(name);
     }
 
-    /*public static void main(String[] args) {
-        Server server = new Server();
-        server.start(false);
-    }*/
-    
-    /**
-     * Start socket server
-     *
-     * @param load
-     */
-    public void start(boolean load) {
+    @Override
+    public void interrupt() {
+        try {
+            this.socket.close();
+        } catch (IOException ex) {
+            Logger.getLogger(Server.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        super.interrupt();
+    }
+
+    @Override
+    public synchronized void start() {
+        super.start();
+    }
+
+    @Override
+    public void run() {
         ServletContext servletContext = (ServletContext) ApplicationListener.getContext();
         Konfiguracija config = (Konfiguracija) servletContext.getAttribute("main-config");
         int port = Integer.parseInt(config.dajPostavku("socket.port"));
 
-        if (load) {
-            // TODO: load data from serialized state
-        }
-
         status = new Status();
 
-        ServerSocket serverSocket = null;
-
         try {
-            serverSocket = new ServerSocket(port);
+            this.socket = new ServerSocket(port);
 
             while (true) {
-                Socket socket = serverSocket.accept();
+                Socket newSocket = this.socket.accept();
 
-                this.addHandler(socket);
+                this.addHandler(newSocket);
             }
         } catch (IOException ex) {
             Logger.getLogger(Server.class.getName()).log(Level.SEVERE, null, ex);
-        } finally {
-            try {
-                serverSocket.close();
-            } catch (IOException ex) {
-                System.out.println("SOCKET_PORT_NOT_OPEN");
-            }
+        }
+    }
+
+    public void close() {
+        try {
+            this.socket.close();
+        } catch (IOException ex) {
+            Logger.getLogger(Server.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 

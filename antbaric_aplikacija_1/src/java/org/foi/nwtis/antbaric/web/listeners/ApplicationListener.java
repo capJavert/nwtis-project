@@ -25,6 +25,7 @@ public class ApplicationListener implements ServletContextListener {
 
     public static ServletContext context = null;
     private static MeteoFetcher meteoFetcher = null;
+    private static Server socketServer = null;
     Konfiguracija config;
 
     @Override
@@ -49,17 +50,18 @@ public class ApplicationListener implements ServletContextListener {
         meteoFetcher = new MeteoFetcher();
         meteoFetcher.start();
 
-        new Thread(
-                () -> {
-                    Server server = new Server();
-                    server.start(false);
-        }).start();
+        socketServer = new Server();
+        socketServer.start(); 
     }
 
     @Override
     public void contextDestroyed(ServletContextEvent sce) {
         if (meteoFetcher != null) {
             meteoFetcher.interrupt();
+        }
+        
+        if (socketServer != null) {
+            socketServer.interrupt();
         }
     }
 
