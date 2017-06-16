@@ -7,11 +7,12 @@
     <f:view locale="#{localizationController.selectedLanguage}">
         <h:head>
             <title>#{m.index_title}</title>
+            <link href="/antbaric_aplikacija_2_2/resources/font-awesome/css/font-awesome.min.css" rel="stylesheet" />
         </h:head>
         <h:body>
             <div class="ui-g">
                 <div class="ui-g-12">
-                    <h1>#{m.index_title}</h1>
+                    <h1>#{m.users_title}</h1>
                 </div>
 
                 <div class="ui-g-2">
@@ -25,23 +26,36 @@
 
                 <div class="ui-g-10">
                     <p:breadCrumb class="ui-g-12">
-                        <p:menuitem value="Home" url="#" />
+                        <p:menuitem value="Home" url="/" />
+                        <p:menuitem value="#{m.users_title}" url="#" />
                     </p:breadCrumb>
                 </div>
 
                 <div class="ui-g-12">
                     <br /><br />
-                    <h:form>
-                        <h:selectOneRadio value="#{localizationController.selectedLanguage}">
-                            <f:selectItems value="#{localizationController.LANGUAGES}" 
-                                           var="lang" itemLabel="#{lang.labela}" itemValue="#{lang.vrijednost}"/>
-                        </h:selectOneRadio>
-                         <br /><br />
-                        <h:commandButton value="#{m.index_changeLanguage}" action="#{localizationController.selectLanguage}"/>
-                    </h:form>
+                    <a href="user.xhtml?id=0">
+                        <p:commandButton type="button" value="#{m.layout_add}" />
+                    </a>
+
+                    <p:dataTable rows="#{userController.pagination}" var="item" value="#{userController.list}">
+                        <p:column headerText="ID">
+                            <h:outputText value="#{item.primaryKey}" />
+                        </p:column>
+
+                        <p:column headerText="#{m.users_username}">
+                            <h:outputText value="#{item.username}" />
+                        </p:column>
+                        <p:column>
+                            <a href="user.xhtml?id=#{item.username}">
+                                <i class="fa fa-edit"></i>
+                            </a>
+                        </p:column>
+                    </p:dataTable>
                 </div>
             </div>
         </h:body>
     </f:view>
 </html>
+
+
 

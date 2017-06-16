@@ -69,7 +69,7 @@ public class UserResource {
     @Consumes(javax.ws.rs.core.MediaType.APPLICATION_JSON)
     public String putJson(String content) {
         User user = JsonHelper.decode(content, User.class);
-
+        System.out.println(content);
         try {
             User check = new User().findOne(user.getPrimaryKey());
             if(check != null && check.username.equals(this.id)) {

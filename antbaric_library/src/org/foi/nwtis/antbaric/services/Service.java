@@ -56,18 +56,18 @@ public abstract class Service<T> {
 
         String payload = this.encodeObject(model);
 
-        String response = webResource.request(MediaType.APPLICATION_JSON).post(Entity.entity(payload, MediaType.APPLICATION_JSON)).toString();
+        String response = webResource.request(MediaType.TEXT_PLAIN).post(Entity.entity(payload, MediaType.APPLICATION_JSON)).readEntity(String.class);;
 
         return response.equals("1");
     }
 
-    public Boolean update(T model) {
-        WebTarget webResource = client.target(this.GM_BASE_URI);
+    public Boolean update(String identifier, T model) {
+        WebTarget webResource = client.target(this.GM_BASE_URI).path(identifier);
 
         String payload = this.encodeObject(model);
 
-        String response = webResource.request(MediaType.APPLICATION_JSON).put(Entity.entity(payload, MediaType.APPLICATION_JSON)).toString();
-
+        String response = webResource.request(MediaType.TEXT_PLAIN).put(Entity.entity(payload, MediaType.APPLICATION_JSON)).readEntity(String.class);
+        
         return response.equals("1");
     }
 
@@ -76,7 +76,11 @@ public abstract class Service<T> {
     }
 
     protected String encodeObject(T model) {
-        return JsonHelper.encode(model);
+        String data = JsonHelper.encode(model);
+        
+        System.out.println(data);
+        
+        return data;
     }
 
     public abstract T decodeObject(String response);

@@ -6,6 +6,8 @@
 package org.foi.nwtis.antbaric.controllers;
 
 import java.util.ArrayList;
+import java.util.Map;
+import javax.faces.context.FacesContext;
 import org.foi.nwtis.antbaric.services.Service;
 
 /**
@@ -14,10 +16,12 @@ import org.foi.nwtis.antbaric.services.Service;
  * @param <T>
  */
 public abstract class Controller<T> {
+
     protected Integer pagination;
     protected ArrayList<T> list;
     protected Service service;
-    
+    protected T model;
+
     public Integer getPagination() {
         return pagination;
     }
@@ -25,5 +29,9 @@ public abstract class Controller<T> {
     public ArrayList<T> getList() {
         return list;
     }
-    
+
+    public T getModel() {
+        return this.model;
+    }
+
 }

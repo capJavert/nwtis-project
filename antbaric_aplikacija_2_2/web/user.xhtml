@@ -7,11 +7,12 @@
     <f:view locale="#{localizationController.selectedLanguage}">
         <h:head>
             <title>#{m.index_title}</title>
+            <link href="/antbaric_aplikacija_2_2/resources/font-awesome/css/font-awesome.min.css" rel="stylesheet" />
         </h:head>
         <h:body>
             <div class="ui-g">
                 <div class="ui-g-12">
-                    <h1>#{m.index_title}</h1>
+                    <h1>#{m.users_title}</h1>
                 </div>
 
                 <div class="ui-g-2">
@@ -25,23 +26,34 @@
 
                 <div class="ui-g-10">
                     <p:breadCrumb class="ui-g-12">
-                        <p:menuitem value="Home" url="#" />
+                        <p:menuitem value="Home" url="/" />
+                        <p:menuitem value="#{m.users_title}" url="#" />
                     </p:breadCrumb>
                 </div>
 
                 <div class="ui-g-12">
                     <br /><br />
                     <h:form>
-                        <h:selectOneRadio value="#{localizationController.selectedLanguage}">
-                            <f:selectItems value="#{localizationController.LANGUAGES}" 
-                                           var="lang" itemLabel="#{lang.labela}" itemValue="#{lang.vrijednost}"/>
-                        </h:selectOneRadio>
-                         <br /><br />
-                        <h:commandButton value="#{m.index_changeLanguage}" action="#{localizationController.selectLanguage}"/>
+                        <h:panelGroup rendered="#{userController.model != null}">
+                            <label>ID</label><br />
+                            <p:inputText disabled="true" value="#{userController.model.primaryKey}" /><br /><br />
+                        </h:panelGroup>
+                        <label>#{m.users_username}</label><br />
+                        <p:inputText value="#{userController.model.username}" /><br /><br />
+                        <label>#{m.users_password}</label><br />
+                        <p:inputText value="#{userController.model.password}" /><br /><br />
+                        <label>#{m.users_name}</label><br />
+                        <p:inputText value="#{userController.model.name}" /><br /><br />
+
+                        <p:commandButton value="#{m.layout_save}" action="#{userController.update}">
+                            <f:param name="id" value="#{userController.model.username}" />
+                        </p:commandButton>
                     </h:form>
                 </div>
             </div>
         </h:body>
     </f:view>
 </html>
+
+
 
