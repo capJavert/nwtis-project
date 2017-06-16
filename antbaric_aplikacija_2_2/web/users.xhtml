@@ -45,7 +45,7 @@
                         <p:column headerText="#{m.users_username}">
                             <h:outputText value="#{item.username}" />
                         </p:column>
-                        <p:column>
+                        <p:column rendered="#{userController.userAuth.user.username.equals(item.username)}">
                             <a href="user.xhtml?id=#{item.username}">
                                 <i class="fa fa-edit"></i>
                             </a>

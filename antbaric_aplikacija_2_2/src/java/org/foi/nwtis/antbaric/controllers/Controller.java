@@ -5,10 +5,15 @@
  */
 package org.foi.nwtis.antbaric.controllers;
 
+import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
+import javax.servlet.ServletContext;
 import org.foi.nwtis.antbaric.services.Service;
+import org.foi.nwtis.antbaric.web.listeners.ApplicationListener;
 
 /**
  *
@@ -21,6 +26,7 @@ public abstract class Controller<T> {
     protected ArrayList<T> list;
     protected Service service;
     protected T model;
+    protected ServletContext context = (ServletContext) ApplicationListener.getContext();
 
     public Integer getPagination() {
         return pagination;
@@ -34,4 +40,12 @@ public abstract class Controller<T> {
         return this.model;
     }
 
+    protected void toLogin() {
+        try {
+            ExternalContext context = FacesContext.getCurrentInstance().getExternalContext();
+            context.redirect("/antbaric_aplikacija_2_2/view/login.xhtml");
+        } catch (IOException ex) {
+            Logger.getLogger(Controller.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
 }

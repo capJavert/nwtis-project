@@ -25,4 +25,19 @@
     <welcome-file-list>
         <welcome-file>view/index.xhtml</welcome-file>
     </welcome-file-list>
+    <ejb-local-ref>
+        <ejb-ref-name>UserAuth</ejb-ref-name>
+        <ejb-ref-type>Session</ejb-ref-type>
+        <ejb-link>antbaric_aplikacija_2_1.jar#UserAuth</ejb-link>
+    </ejb-local-ref>
+    <ejb-local-ref>
+        <ejb-ref-name>UserAuth1</ejb-ref-name>
+        <ejb-ref-type>Session</ejb-ref-type>
+        <ejb-link>antbaric_aplikacija_2_1.jar#UserAuth</ejb-link>
+    </ejb-local-ref>
+    <ejb-local-ref>
+        <ejb-ref-name>UserAuth2</ejb-ref-name>
+        <ejb-ref-type>Session</ejb-ref-type>
+        <ejb-link>antbaric_aplikacija_2_1.jar#UserAuth</ejb-link>
+    </ejb-local-ref>
 </web-app>

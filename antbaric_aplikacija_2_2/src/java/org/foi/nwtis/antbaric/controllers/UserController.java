@@ -5,6 +5,7 @@ import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
 import javax.faces.context.FacesContext;
 import javax.servlet.ServletContext;
+import org.foi.nwtis.antbaric.beans.UserAuth;
 import org.foi.nwtis.antbaric.konfiguracije.Konfiguracija;
 import org.foi.nwtis.antbaric.models.User;
 import org.foi.nwtis.antbaric.services.UserService;
@@ -16,10 +17,15 @@ import org.foi.nwtis.antbaric.web.listeners.ApplicationListener;
  */
 @ManagedBean(name = "userController")
 public class UserController extends Controller<User> {
+
     private String username;
     
     @PostConstruct
     public void init() {
+        if(this.getUserAuth().isGuest()) {
+            this.toLogin();
+        }
+        
         ServletContext servletContext = (ServletContext) ApplicationListener.getContext();
         Konfiguracija config = (Konfiguracija) servletContext.getAttribute("main-config");
 
@@ -34,6 +40,10 @@ public class UserController extends Controller<User> {
         if (id != null) {
             this.getUser(id);
         }
+    }
+
+    public UserAuth getUserAuth() {
+        return null;
     }
 
     private void getUser(String id) {
