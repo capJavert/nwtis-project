@@ -27,6 +27,11 @@ public abstract class Controller<T> {
     protected T model;
     ExternalContext externalContext = FacesContext.getCurrentInstance().getExternalContext();
     HttpServletRequest request = (HttpServletRequest) externalContext.getRequest();
+    protected String message = "";
+
+    public String getMessage() {
+        return message;
+    }
 
     public Integer getPagination() {
         return pagination;
@@ -42,10 +47,17 @@ public abstract class Controller<T> {
 
     protected void toLogin() {
         try {
-            ExternalContext context = FacesContext.getCurrentInstance().getExternalContext();
-            context.redirect("/antbaric_aplikacija_2_2/view/login.xhtml");
+            externalContext.redirect("/antbaric_aplikacija_2_2/view/login.xhtml");
         } catch (IOException ex) {
             Logger.getLogger(Controller.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    protected void toIndex() {
+        try {
+            externalContext.redirect("/antbaric_aplikacija_2_2/view/index.xhtml");
+        } catch (IOException ex) {
+            Logger.getLogger(RegistrationController.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 }

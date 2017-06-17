@@ -7,7 +7,6 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
 import javax.enterprise.context.RequestScoped;
-import javax.enterprise.context.SessionScoped;
 import javax.faces.bean.ManagedBean;
 import javax.faces.context.FacesContext;
 import javax.servlet.ServletContext;
@@ -21,19 +20,19 @@ import org.foi.nwtis.antbaric.web.listeners.ApplicationListener;
  *
  * @author javert
  */
-@ManagedBean(name = "userController")
+@ManagedBean(name = "registrationController")
 @RequestScoped
-public class UserController extends Controller<User> implements Serializable {
+public class RegistrationController extends Controller<User> implements Serializable {
 
     private String username = null;
     private UserAuth userAuth;
-
+        
     @PostConstruct
     public void init() {
         this.userAuth = (UserAuth) request.getSession().getAttribute("user");
         
-        if(this.userAuth == null) {
-            this.toLogin();
+        if(this.userAuth != null) {
+            this.toIndex();
         }
 
         ServletContext servletContext = (ServletContext) ApplicationListener.getContext();
@@ -48,9 +47,6 @@ public class UserController extends Controller<User> implements Serializable {
         String id = params.get("id");
 
         if (id != null) {
-            if(!id.equals(this.userAuth.getUser().getUsername())) {
-                this.toIndex();
-            }
             this.getUser(id);
         } else {
             this.model = new User();
@@ -59,10 +55,6 @@ public class UserController extends Controller<User> implements Serializable {
 
     public String getUsername() {
         return username;
-    }
-
-    public UserAuth getUserAuth() {
-        return userAuth;
     }
 
     private void getUser(String id) {
@@ -75,13 +67,13 @@ public class UserController extends Controller<User> implements Serializable {
     }
 
     public void create() {
-        System.out.println(this.service.create(this.model).toString());
-        
-        try {
-            externalContext.redirect("/antbaric_aplikacija_2_2/view/users.xhtml");
-        } catch (IOException ex) {
-            Logger.getLogger(UserController.class.getName()).log(Level.SEVERE, null, ex);
+        if(this.service.create(this.model)) {
+            this.message = null;
+            this.toIndex();
+        } else {
+            this.message = "Došlo je do pogreške kod registracija";
         }
+        
     }
 
     public void update() {

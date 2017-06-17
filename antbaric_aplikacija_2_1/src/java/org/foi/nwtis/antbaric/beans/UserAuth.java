@@ -29,6 +29,10 @@ public class UserAuth {
         this.service = new UserService();
     }
 
+    public User getUser() {
+        return user;
+    }
+
     public Boolean login(final String username, final String password) {
         User model = this.service.get(username);
 

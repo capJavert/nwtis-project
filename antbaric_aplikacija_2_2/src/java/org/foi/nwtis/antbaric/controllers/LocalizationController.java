@@ -5,31 +5,42 @@ import javax.enterprise.context.SessionScoped;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Locale;
+import javax.annotation.PostConstruct;
+import javax.enterprise.context.RequestScoped;
 import javax.faces.component.UIViewRoot;
+import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
+import javax.servlet.http.HttpServletRequest;
+import org.foi.nwtis.antbaric.beans.UserAuth;
 import org.foi.nwtis.antbaric.components.Izbornik;
 
 @Named(value = "localizationController")
-@SessionScoped
-public class LocalizationController implements Serializable
-{
+@RequestScoped
+public class LocalizationController implements Serializable {
+
+    private UserAuth userAuth;
     static final ArrayList<Izbornik> LANGUAGES = new ArrayList<>();
-    private String selectedLanguage;
-    
-    static 
-    {
+    private static String selectedLanguage = "hr";
+    ExternalContext externalContext = FacesContext.getCurrentInstance().getExternalContext();
+    HttpServletRequest request = (HttpServletRequest) externalContext.getRequest();
+
+    static {
         LANGUAGES.add(new Izbornik("Hrvatski", "hr"));
         LANGUAGES.add(new Izbornik("English", "en"));
     }
-    
-    public LocalizationController()
-    {
+
+    @PostConstruct
+    public void init() {
+        this.userAuth = (UserAuth) request.getSession().getAttribute("user");
     }
 
-    public Object selectLanguage()
-    {
+    public UserAuth getUserAuth() {
+        return (UserAuth) request.getSession().getAttribute("user");
+    }
+
+    public Object selectLanguage() {
         setSelectedLanguage(selectedLanguage);
-        
+
         return "SELECT_LANGUAGE";
     }
 
@@ -37,21 +48,11 @@ public class LocalizationController implements Serializable
         return LANGUAGES;
     }
 
-    public String getSelectedLanguage()
-    {
-        FacesContext facesContext = FacesContext.getCurrentInstance();
-        UIViewRoot viewRoot = facesContext.getViewRoot();
-        if(viewRoot != null)
-        {
-            Locale localLanguage = FacesContext.getCurrentInstance().getViewRoot().getLocale();
-            selectedLanguage = localLanguage.getLanguage();
-        }
-        
+    public String getSelectedLanguage() {
         return selectedLanguage;
     }
 
-    public void setSelectedLanguage(String selectedLang)
-    {
+    public void setSelectedLanguage(String selectedLang) {
         this.selectedLanguage = selectedLang;
         Locale localLanguage = new Locale(selectedLang);
         FacesContext.getCurrentInstance().getViewRoot().setLocale(localLanguage);
