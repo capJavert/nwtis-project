@@ -6,7 +6,7 @@
       xmlns:p="http://primefaces.org/ui">
     <f:view locale="#{localizationController.selectedLanguage}">
         <h:head>
-            <title>#{m.index_title}</title>
+            <title>#{m.users_title}</title>
             <link href="/antbaric_aplikacija_2_2/resources/font-awesome/css/font-awesome.min.css" rel="stylesheet" />
         </h:head>
         <h:body>
@@ -19,7 +19,7 @@
                     <h:form>
                         <p:menuButton value="#{m.layout_navigation}">
                             <p:menuitem value="#{m.index_title}" url="/view/index.xhtml" />
-                            <p:menuitem value="#{m.users_title}" url="/view/devices.xhtml" />
+                            <p:menuitem value="#{m.users_title}" url="/view/users.xhtml" />
                             <p:menuitem value="#{m.devices_title}" url="/view/devices.xhtml" />
                             <p:menuitem value="#{m.socket_title}" url="/view/socket.xhtml" />
                             <p:menuitem value="#{m.log_title}" url="/view/log.xhtml" />

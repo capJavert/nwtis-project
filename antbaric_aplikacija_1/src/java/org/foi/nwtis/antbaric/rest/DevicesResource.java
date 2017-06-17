@@ -58,9 +58,10 @@ public class DevicesResource {
      */
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
-    @Produces(MediaType.TEXT_PLAIN)
+    @Produces(MediaType.APPLICATION_JSON)
     public String postJson(String content) {
         Device device = JsonHelper.decode(content, Device.class);
+        device.status = 0;
         
         try {
             return device.create() ? "1" : "0";

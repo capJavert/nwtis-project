@@ -16,6 +16,10 @@ public class Device {
     private Timestamp vrijeme_promjene;
     private Timestamp vrijeme_kreiranja;
 
+    public void setPrimaryKey(Integer id) {
+        this.id = id;
+    }
+
     public Integer getPrimaryKey() {
         return this.id;
     }
@@ -67,5 +71,5 @@ public class Device {
     public void setVrijeme_kreiranja(Timestamp vrijeme_kreiranja) {
         this.vrijeme_kreiranja = vrijeme_kreiranja;
     }
-    
+
 }

@@ -67,9 +67,11 @@ public class DeviceResource {
      * @return
      */
     @PUT
-    @Consumes(MediaType.TEXT_PLAIN)
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
     public String putJson(String content) {
         Device device = JsonHelper.decode(content, Device.class);
+        device.status = 0;
         
         try {
             Device check = new Device().findOne(Integer.parseInt(this.id));

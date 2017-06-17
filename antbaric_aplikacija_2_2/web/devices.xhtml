@@ -1,0 +1,109 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+    <f:view locale="#{localizationController.selectedLanguage}">
+        <h:head>
+            <title>#{m.devices_title}</title>
+            <link href="/antbaric_aplikacija_2_2/resources/font-awesome/css/font-awesome.min.css" rel="stylesheet" />
+        </h:head>
+        <h:body>
+            <div class="ui-g">
+                <div class="ui-g-12">
+                    <h1>#{m.devices_title}</h1>
+                </div>
+
+                <div class="ui-g-2">
+                    <h:form>
+                        <p:menuButton value="#{m.layout_navigation}">
+                            <p:menuitem value="#{m.index_title}" url="/view/index.xhtml" />
+                            <p:menuitem value="#{m.users_title}" url="/view/users.xhtml" />
+                            <p:menuitem value="#{m.devices_title}" url="/view/devices.xhtml" />
+                            <p:menuitem value="#{m.socket_title}" url="/view/socket.xhtml" />
+                            <p:menuitem value="#{m.log_title}" url="/view/log.xhtml" />
+                            <p:menuitem value="#{m.email_title}" url="/view/mail.xhtml" />
+                            <p:menuitem value="#{m.messages_title}" url="/view/messages.xhtml" />
+                        </p:menuButton>
+                    </h:form>
+                </div>
+
+                <div class="ui-g-10">
+                    <p:breadCrumb class="ui-g-12">
+                        <p:menuitem value="Home" url="/" />
+                        <p:menuitem value="#{m.devices_title}" url="#" />
+                    </p:breadCrumb>
+                </div>
+
+                <h:panelGroup id="page-crud">
+                    <h:panelGroup style="display:#{!(deviceController.editing)?'block':'none'};" id="devices-list" class="ui-g-12">
+                        <br /><br />
+                        <p:commandButton type="button" value="#{m.layout_add}">
+                            <f:ajax listener="#{deviceController.setEditing(0)}" render="page-crud" />
+                        </p:commandButton>
+
+                        <p:dataTable rendered="#{!deviceController.editing}" rows="#{deviceController.pagination}" var="item" value="#{deviceController.list}" paginator="true"
+                                     paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}">
+                            <p:column width="5%" headerText="ID">
+                                <h:outputText value="#{item.primaryKey}" />
+                            </p:column>
+
+                            <p:column width="20%" headerText="#{m.devices_name}">
+                                <h:outputText value="#{item.naziv}" />
+                            </p:column>
+                            <p:column headerText="#{m.devices_lat}">
+                                <h:outputText value="#{item.latitude}" />
+                            </p:column>
+                            <p:column headerText="#{m.devices_lng}">
+                                <h:outputText value="#{item.longitude}" />
+                            </p:column>
+                            <p:column headerText="#{m.devices_timecreated}">
+                                <h:outputText value="#{item.vrijeme_kreiranja}" />
+                            </p:column>
+                            <p:column headerText="#{m.devices_timemodified}">
+                                <h:outputText value="#{item.vrijeme_promjene}" />
+                            </p:column>
+                            <p:column width="5%">
+                                <p:commandButton id="withIcon" icon=" ui-icon-pencil">
+                                    <f:ajax listener="#{deviceController.setEditing(item.primaryKey)}" render="devices-list page-form" />
+                                </p:commandButton>
+                            </p:column>
+                        </p:dataTable>
+                    </h:panelGroup>
+
+                    <h:panelGroup id="page-form" style="display:#{(deviceController.editing)?'block':'none'};" class="ui-g-12">
+                        <br /><br />
+
+                        <h:form>
+                            <label>ID</label><br />
+                            <p:inputText id="device-id" value="#{deviceController.deviceId}" /><br /><br />
+
+                            <label>#{m.devices_name}</label><br />
+                            <p:inputText id="device-name" value="#{deviceController.deviceName}" /><br /><br />
+
+                            <label>#{m.devices_lat}</label><br />
+                            <p:inputText id="device-lat" value="#{deviceController.latitude}" /><br /><br />
+
+                            <label>#{m.devices_lng}</label><br />
+                            <p:inputText id="device-lng" value="#{deviceController.longitude}" /><br /><br />
+
+                            <p:commandButton style="display:#{(deviceController.isNew)?'block':'none'};" value="#{m.layout_save}">
+                                <f:ajax listener="#{deviceController.create}" execute="device-id device-name device-lat device-lng" render="devices-list page-form" />
+                            </p:commandButton>
+
+                            <p:commandButton style="display:#{!(deviceController.isNew)?'block':'none'};" value="#{m.layout_save}">
+                                <f:ajax listener="#{deviceController.update}" execute="device-id device-name device-lat device-lng" render="devices-list page-form"/>
+                            </p:commandButton>
+
+                        </h:form>
+                    </h:panelGroup>
+                </h:panelGroup>
+
+            </div>
+        </h:body>
+    </f:view>
+</html>
+
+
+

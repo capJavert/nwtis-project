@@ -11,6 +11,7 @@ import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.PUT;
 import javax.ws.rs.DELETE;
+import javax.ws.rs.core.MediaType;
 import org.foi.nwtis.antbaric.helpers.JsonHelper;
 import org.foi.nwtis.antbaric.models.User;
 
@@ -67,6 +68,7 @@ public class UserResource {
      */
     @PUT
     @Consumes(javax.ws.rs.core.MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
     public String putJson(String content) {
         User user = JsonHelper.decode(content, User.class);
         System.out.println(content);
