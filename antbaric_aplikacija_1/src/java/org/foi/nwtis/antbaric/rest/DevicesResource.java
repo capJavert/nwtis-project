@@ -58,7 +58,7 @@ public class DevicesResource {
      */
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
-    @Produces(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.TEXT_PLAIN)
     public String postJson(String content) {
         Device device = JsonHelper.decode(content, Device.class);
         

@@ -34,7 +34,7 @@
                 <div class="ui-g-12">
                     <br /><br />
                     <h:form>
-                        <h:panelGroup rendered="#{userController.model != null}">
+                        <h:panelGroup rendered="#{userController.username != null}">
                             <label>ID</label><br />
                             <p:inputText disabled="true" value="#{userController.model.primaryKey}" /><br /><br />
                         </h:panelGroup>
@@ -45,9 +45,11 @@
                         <label>#{m.users_name}</label><br />
                         <p:inputText value="#{userController.model.name}" /><br /><br />
 
-                        <p:commandButton value="#{m.layout_save}" action="#{userController.update}">
+                        <p:commandButton rendered="#{userController.username != null}" value="#{m.layout_save}" action="#{userController.update}">
                             <f:param name="id" value="#{userController.model.username}" />
                         </p:commandButton>
+
+                        <p:commandButton rendered="#{userController.username == null}" value="#{m.layout_save}" action="#{userController.create}" />
                     </h:form>
                 </div>
             </div>

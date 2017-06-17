@@ -21,16 +21,16 @@ import org.foi.nwtis.antbaric.web.listeners.ApplicationListener;
 @SessionScoped
 public class UserController extends Controller<User> implements Serializable {
 
-    private String username;
+    private String username = null;
     private UserAuth userAuth;
 
     @PostConstruct
     public void init() {
         this.userAuth = (UserAuth) request.getSession().getAttribute("user");
         
-        if(this.userAuth == null) {
+        /*if(this.userAuth == null) {
             this.toLogin();
-        }
+        }*/
 
         ServletContext servletContext = (ServletContext) ApplicationListener.getContext();
         Konfiguracija config = (Konfiguracija) servletContext.getAttribute("main-config");
@@ -45,7 +45,13 @@ public class UserController extends Controller<User> implements Serializable {
 
         if (id != null) {
             this.getUser(id);
+        } else {
+            this.model = new User();
         }
+    }
+
+    public String getUsername() {
+        return username;
     }
 
     private void getUser(String id) {
@@ -58,7 +64,7 @@ public class UserController extends Controller<User> implements Serializable {
     }
 
     public void create() {
-        this.service.create(this.model);
+        System.out.println(this.service.create(this.model).toString());
     }
 
     public void update() {

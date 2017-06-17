@@ -56,8 +56,8 @@ public abstract class Service<T> {
 
         String payload = this.encodeObject(model);
 
-        String response = webResource.request(MediaType.TEXT_PLAIN).post(Entity.entity(payload, MediaType.APPLICATION_JSON)).readEntity(String.class);;
-
+        String response = webResource.request(MediaType.APPLICATION_JSON).post(Entity.entity(payload, MediaType.APPLICATION_JSON)).readEntity(String.class);;
+        
         return response.equals("1");
     }
 
@@ -66,7 +66,7 @@ public abstract class Service<T> {
 
         String payload = this.encodeObject(model);
 
-        String response = webResource.request(MediaType.TEXT_PLAIN).put(Entity.entity(payload, MediaType.APPLICATION_JSON)).readEntity(String.class);
+        String response = webResource.request(MediaType.APPLICATION_JSON).put(Entity.entity(payload, MediaType.APPLICATION_JSON)).readEntity(String.class);
         
         return response.equals("1");
     }
