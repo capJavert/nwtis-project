@@ -24,10 +24,9 @@ public class LoggingFilter implements Filter {
     @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws ServletException, IOException {
         Long start = System.currentTimeMillis();
-        System.out.println("FILTER WORKS!");
 
         Dnevnik log = new Dnevnik();
-        log.setData(((HttpServletRequest) request).getRequestURL().toString());
+        log.setData(((HttpServletRequest) request).getRequestURL().toString().replace("http://localhost:8080/antbaric_aplikacija_2_2", ""));
         log.setIpadresa(request.getRemoteAddr());
         UserAuth userAuth = (UserAuth) ((HttpServletRequest) request).getSession().getAttribute("user");
         if(userAuth != null) {
