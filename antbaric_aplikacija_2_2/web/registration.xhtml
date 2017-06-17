@@ -15,15 +15,6 @@
                     <h1>#{m.registration_title}</h1>
                 </div>
 
-                <div class="ui-g-2">
-                    <h:form>
-                        <p:menuButton value="#{m.layout_navigation}">
-                            <p:menuitem value="#{m.index_title}" url="/view/index.xhtml" />
-                            <p:menuitem value="#{m.registration_title}" url="#" />
-                        </p:menuButton>
-                    </h:form>
-                </div>
-
                 <div class="ui-g-10">
                     <p:breadCrumb class="ui-g-12">
                         <p:menuitem value="Home" url="/" />
@@ -31,7 +22,7 @@
                     </p:breadCrumb>
                 </div>
 
-                <div class="ui-g-12">
+                <div style="width: 100%; text-align:center;" class="ui-g-12">
                     <br /><br />
                     <h:form>
                         <h:panelGroup rendered="#{registrationController.username != null}">

@@ -25,4 +25,8 @@
     <welcome-file-list>
         <welcome-file>view/index.xhtml</welcome-file>
     </welcome-file-list>
+  <filter>
+    <filter-name>LoggingFilter</filter-name>
+    <filter-class>org.foi.nwtis.antbaric.filters.LoggingFilter</filter-class>
+  </filter>
 </web-app>

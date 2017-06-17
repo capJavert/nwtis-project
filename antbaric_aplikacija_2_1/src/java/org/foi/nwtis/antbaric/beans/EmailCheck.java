@@ -39,8 +39,9 @@ public class EmailCheck {
         try {
             config = KonfiguracijaApstraktna.preuzmiKonfiguraciju("/Users/javert/Documents/fax/nwtis/projekt/nwtis-project/antbaric_aplikacija_2_1/src/conf/module-config.xml");
 
-            this.emailFetcher = new EmailFetcher();
-            this.emailFetcher.start(); 
+            // TODO: uncomment before presentation
+            //this.emailFetcher = new EmailFetcher();
+            //this.emailFetcher.start(); 
         } catch (NemaKonfiguracije | NeispravnaKonfiguracija ex) {
             Logger.getLogger(EmailCheck.class.getName()).log(Level.SEVERE, null, ex);
         }

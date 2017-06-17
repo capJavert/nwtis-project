@@ -23,15 +23,15 @@
 
             <div style="width: 100%; text-align:center;" class="ui-g-12">
                 <h:form>
-                    <h:outputText value="#{m.users_username} " /> 
+                    <h:outputText value="#{m.users_username} " /> <br />
                     <p:inputText id="username" value="#{loginController.username}"></p:inputText>
                     <p:message for="username"></p:message>
-                    <br></br><br></br>
+                    <br></br>
 
-                    <h:outputText value="#{m.users_password} " /> 
+                    <h:outputText value="#{m.users_password} " /> <br />
                     <p:password id="password" value="#{loginController.password}"></p:password>
                     <p:message for="password"></p:message>
-                    <br></br><br></br>
+                    <br></br>
 
                     <p:commandButton action="#{loginController.signIn()}"
                                      value="Login"></p:commandButton>
