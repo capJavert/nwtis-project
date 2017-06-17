@@ -1,8 +1,13 @@
 package org.foi.nwtis.antbaric.controllers;
 
+import java.io.Serializable;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
+import javax.enterprise.context.SessionScoped;
 import javax.faces.bean.ManagedBean;
+import javax.faces.context.ExternalContext;
+import javax.faces.context.FacesContext;
+import javax.servlet.http.HttpServletRequest;
 import org.foi.nwtis.antbaric.beans.UserAuth;
 
 /**
@@ -10,7 +15,8 @@ import org.foi.nwtis.antbaric.beans.UserAuth;
  * @author javert
  */
 @ManagedBean(name = "loginController")
-public class LoginController {
+@SessionScoped
+public class LoginController implements Serializable {
 
     @EJB
     private UserAuth userAuth;
@@ -18,13 +24,21 @@ public class LoginController {
     private String username;
     private String password;
 
+    ExternalContext externalContext = FacesContext.getCurrentInstance().getExternalContext();
+    HttpServletRequest request = (HttpServletRequest) externalContext.getRequest();
+
     @PostConstruct
     public void init() {
     }
 
     public String signIn() {
-        return this.userAuth.login(this.username, this.password) ? 
-                "SIGNIN_SUCCESS" : "SIGNIN_ERROR";
+        if (this.userAuth.login(this.username, this.password)) {
+            request.getSession().setAttribute("user", this.userAuth);
+            
+            return "SIGNIN_SUCCESS";
+        }
+        
+        return "SIGNIN_ERROR";
     }
 
     public String getUsername() {

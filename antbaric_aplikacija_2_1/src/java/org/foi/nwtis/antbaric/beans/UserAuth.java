@@ -22,7 +22,7 @@ public class UserAuth {
     private User user;
 
     public Boolean isGuest() {
-        return user != null;
+        return user == null;
     }
 
     public UserAuth() {

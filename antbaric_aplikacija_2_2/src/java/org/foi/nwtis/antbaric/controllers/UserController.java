@@ -1,10 +1,13 @@
 package org.foi.nwtis.antbaric.controllers;
 
+import java.io.Serializable;
 import java.util.Map;
 import javax.annotation.PostConstruct;
+import javax.enterprise.context.SessionScoped;
 import javax.faces.bean.ManagedBean;
 import javax.faces.context.FacesContext;
 import javax.servlet.ServletContext;
+import org.foi.nwtis.antbaric.beans.UserAuth;
 import org.foi.nwtis.antbaric.konfiguracije.Konfiguracija;
 import org.foi.nwtis.antbaric.models.User;
 import org.foi.nwtis.antbaric.services.UserService;
@@ -15,11 +18,20 @@ import org.foi.nwtis.antbaric.web.listeners.ApplicationListener;
  * @author javert
  */
 @ManagedBean(name = "userController")
-public class UserController extends Controller<User> {
+@SessionScoped
+public class UserController extends Controller<User> implements Serializable {
+
     private String username;
-    
+    private UserAuth userAuth;
+
     @PostConstruct
     public void init() {
+        this.userAuth = (UserAuth) request.getSession().getAttribute("user");
+        
+        if(this.userAuth == null) {
+            this.toLogin();
+        }
+
         ServletContext servletContext = (ServletContext) ApplicationListener.getContext();
         Konfiguracija config = (Konfiguracija) servletContext.getAttribute("main-config");
 
