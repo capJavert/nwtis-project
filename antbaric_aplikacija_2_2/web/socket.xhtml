@@ -6,13 +6,13 @@
       xmlns:p="http://primefaces.org/ui">
     <f:view locale="#{localizationController.selectedLanguage}">
         <h:head>
-            <title>#{m.index_title}</title>
+            <title>#{m.socket_title}</title>
             <link href="/antbaric_aplikacija_2_2/resources/font-awesome/css/font-awesome.min.css" rel="stylesheet" />
         </h:head>
         <h:body>
             <div class="ui-g">
                 <div class="ui-g-12">
-                    <h1>#{m.users_title}</h1>
+                    <h1>#{m.socket_title}</h1>
                 </div>
 
                 <div class="ui-g-2">
@@ -31,33 +31,33 @@
                 <div class="ui-g-10">
                     <p:breadCrumb class="ui-g-12">
                         <p:menuitem value="Home" url="/" />
-                        <p:menuitem value="#{m.users_title}" url="#" />
+                        <p:menuitem value="#{m.socket_title}" url="#" />
                     </p:breadCrumb>
                 </div>
 
                 <div class="ui-g-12">
                     <br /><br />
-                    <!--<a href="user.xhtml">
-                        <p:commandButton type="button" value="#{m.layout_add}" />
-                    </a>-->
+                    <h:form id="page-form">
+                        <h:selectOneMenu id="select-command" value="#{socketController.command}">
+                            <f:selectItems value="#{socketController.commands}" var="f"
+                                           itemLabel="#{f.labela}" itemValue="#{f.vrijednost}"/>
+                        </h:selectOneMenu><br /><br />
 
-                    <p:dataTable rows="#{userController.pagination}" var="item" value="#{userController.list}">
-                        <p:column headerText="ID">
-                            <h:outputText value="#{item.primaryKey}" />
-                        </p:column>
+                        <label>ID</label><br />
+                        <p:inputText id="device-id" value="#{socketController.deviceId}" /><br /><br />
 
-                        <p:column headerText="#{m.users_username}">
-                            <h:outputText value="#{item.username}" />
-                        </p:column>
-                        <p:column headerText="#{m.users_name}">
-                            <h:outputText value="#{item.name}" />
-                        </p:column>
-                        <p:column rendered="#{userController.userAuth.user.username == item.username}">
-                            <a href="user.xhtml?id=#{item.username}">
-                                <i class="fa fa-edit"></i>
-                            </a>
-                        </p:column>
-                    </p:dataTable>
+                        <label>#{m.socket_devicename}</label><br />
+                        <p:inputText id="device-name" value="#{socketController.deviceName}" /><br /><br />
+
+                        <label>#{m.socket_deviceaddress}</label><br />
+                        <p:inputText id="device-address" value="#{socketController.deviceAddress}" /><br /><br />
+
+                        <p:commandButton value="#{m.layout_save}">
+                            <f:ajax listener="#{socketController.runClient}" execute="select-command device-id device-name device-address" render="page-form" />
+                        </p:commandButton><br /><br />
+
+                        <p:inputTextarea value="#{socketController.response}" rows="6" cols="60" />
+                    </h:form>
                 </div>
             </div>
         </h:body>

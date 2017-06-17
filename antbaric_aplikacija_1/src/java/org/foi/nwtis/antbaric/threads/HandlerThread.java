@@ -28,36 +28,36 @@ import org.foi.nwtis.dkermek.ws.serveri.Uredjaj;
  * @author javert
  */
 public class HandlerThread extends Thread {
-    
+
     private final Socket socket;
     private final ServletContext context;
     private final Konfiguracija config;
     private String username = "PUBLIC";
     private Long workTime;
-    
+
     public HandlerThread(Socket socket) {
         this.socket = socket;
         this.context = (ServletContext) ApplicationListener.getContext();
         this.config = (Konfiguracija) this.context.getAttribute("main-config");
     }
-    
+
     @Override
     public void interrupt() {
         super.interrupt();
     }
-    
+
     @Override
     public void run() {
         StringBuilder command = new StringBuilder();
         InputStream inputStream = null;
         OutputStream outputStream = null;
-        
+
         try {
             this.workTime = System.currentTimeMillis();
-            
+
             inputStream = socket.getInputStream();
             outputStream = socket.getOutputStream();
-            
+
             while (true) {
                 int znak = inputStream.read();
                 if (znak == -1) {
@@ -66,20 +66,26 @@ public class HandlerThread extends Thread {
                     command.append((char) znak);
                 }
             }
-            
+
+            System.out.println(command.toString());
             Matcher matcher = SyntaxValidator.validate(command.toString());
+            System.out.println(matcher);
             if (matcher != null && new User().authenticate(matcher.group(1), matcher.group(2)) != null) {
                 this.username = matcher.group(1);
-                
+                System.out.println("autenticiran");
+
                 IoTMasterWSClient wsClient = new IoTMasterWSClient(
                         this.config.dajPostavku("ws.username"),
                         this.config.dajPostavku("ws.password")
                 );
-                
+
                 MailHelper.send(command.toString() + "\\r\\n" + MiscHelper.currentDate("dd.MM.yyyy hh.mm.ss.zzz"));
-                
+
+                System.out.println("sve ok");
+
                 switch (matcher.group(3)) {
                     case "IoT_Master":
+                        System.out.println("Master je bio");
                         switch (matcher.group(4)) {
                             case "START":
                                 if (wsClient.registrirajGrupuIoT()) {
@@ -119,7 +125,7 @@ public class HandlerThread extends Thread {
                                 break;
                             case "STATUS":
                                 StatusKorisnika groupStatus = wsClient.dajStatusGrupeIoT();
-                                
+
                                 switch (groupStatus) {
                                     case AKTIVAN:
                                         outputStream.write("OK 25;".getBytes());
@@ -134,17 +140,18 @@ public class HandlerThread extends Thread {
                                 break;
                             case "LIST":
                                 List<Uredjaj> devices = wsClient.dajSveUredjajeGrupe();
-                                
+
                                 String output = "OK 10; {";
-                                
+
                                 for (Uredjaj device : devices) {
                                     output = output.concat("{IoT " + String.valueOf(device.getId()) + " " + device.getNaziv());
                                 }
-                                
+
                                 outputStream.write(output.concat("};").getBytes());
                         }
                         break;
                     case "IoT":
+                        System.out.println("IoT je bio");
                         switch (matcher.group(5)) {
                             case "WORK":
                                 if (wsClient.aktivirajUredjajGrupe(Integer.parseInt(matcher.group(4)))) {
@@ -169,7 +176,7 @@ public class HandlerThread extends Thread {
                                 break;
                             case "STATUS":
                                 StatusUredjaja deviceStatus = wsClient.dajStatusUredjajaGrupe(Integer.parseInt(matcher.group(4)));
-                                
+
                                 switch (deviceStatus) {
                                     case AKTIVAN:
                                         outputStream.write("OK 35;".getBytes());
@@ -189,11 +196,12 @@ public class HandlerThread extends Thread {
                                 )) {
                                     outputStream.write("OK 10;".getBytes());
                                 } else {
-                                    outputStream.write("OK 30;".getBytes());
+                                    outputStream.write("ERR 30;".getBytes());
                                 }
                         }
                         break;
                     default:
+                        System.out.println("Socket je bio");
                         switch (matcher.group(4)) {
                             case "PAUSE":
                                 if (Server.getStatus().equals("PAUSE")) {
@@ -237,11 +245,11 @@ public class HandlerThread extends Thread {
                 }
             } else {
                 this.username = "PUBLIC";
-                
+                System.out.println("error je bio");
                 outputStream.write("ERR 10".getBytes());
             }
-            
-            new Log().write(this.username, command.toString(), this.socket.getRemoteSocketAddress().toString(), System.currentTimeMillis()-this.workTime);
+
+            new Log().write(this.username, command.toString(), this.socket.getRemoteSocketAddress().toString(), System.currentTimeMillis() - this.workTime);
             outputStream.flush();
         } catch (IOException | SQLException ex) {
             Logger.getLogger(HandlerThread.class.getName()).log(Level.SEVERE, null, ex);
@@ -259,17 +267,17 @@ public class HandlerThread extends Thread {
             }
         }
     }
-    
+
     private Uredjaj findDeviceById(Integer id, List<Uredjaj> devices) {
         for (Uredjaj device : devices) {
             if (device.getId() == id) {
                 return device;
             }
         }
-        
+
         return null;
     }
-    
+
     @Override
     public synchronized void start() {
         super.start();

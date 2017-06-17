@@ -19,6 +19,10 @@
                         <p:menuButton value="#{m.layout_navigation}">
                             <p:menuitem rendered="#{localizationController.userAuth != null}" value="#{m.index_title}" url="/view/index.xhtml" />
                             <p:menuitem rendered="#{localizationController.userAuth != null}" value="#{m.users_title}" url="/view/users.xhtml" />
+                            <p:menuitem rendered="#{localizationController.userAuth != null}" value="#{m.socket_title}" url="/view/socket.xhtml" />
+                            <p:menuitem rendered="#{localizationController.userAuth != null}" value="#{m.log_title}" url="/view/log.xhtml" />
+                            <p:menuitem rendered="#{localizationController.userAuth != null}" value="#{m.email_title}" url="/view/log.xhtml" />
+                            <p:menuitem rendered="#{localizationController.userAuth != null}" value="#{m.messages_title}" url="/view/log.xhtml" />
                             <p:menuitem rendered="#{localizationController.userAuth == null}" value="#{m.login_title}" url="/view/login.xhtml" />
                             <p:menuitem rendered="#{localizationController.userAuth == null}" value="#{m.registration_title}" url="/view/registration.xhtml" />
                         </p:menuButton>
@@ -38,7 +42,7 @@
                             <f:selectItems value="#{localizationController.LANGUAGES}" 
                                            var="lang" itemLabel="#{lang.labela}" itemValue="#{lang.vrijednost}"/>
                         </h:selectOneRadio>
-                         <br /><br />
+                        <br /><br />
                         <h:commandButton value="#{m.index_changeLanguage}" action="#{localizationController.selectLanguage}"/>
                     </h:form>
                 </div>

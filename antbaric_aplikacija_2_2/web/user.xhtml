@@ -20,7 +20,10 @@
                         <p:menuButton value="#{m.layout_navigation}">
                             <p:menuitem value="#{m.index_title}" url="/view/index.xhtml" />
                             <p:menuitem value="#{m.users_title}" url="/view/users.xhtml" />
-                            <p:menuitem value="#{userController.model.username}" url="#" />
+                            <p:menuitem value="#{m.socket_title}" url="/view/socket.xhtml" />
+                            <p:menuitem value="#{m.log_title}" url="/view/log.xhtml" />
+                            <p:menuitem value="#{m.email_title}" url="/view/log.xhtml" />
+                            <p:menuitem value="#{m.messages_title}" url="/view/log.xhtml" />
                         </p:menuButton>
                     </h:form>
                 </div>
@@ -28,7 +31,8 @@
                 <div class="ui-g-10">
                     <p:breadCrumb class="ui-g-12">
                         <p:menuitem value="Home" url="/" />
-                        <p:menuitem value="#{m.users_title}" url="#" />
+                        <p:menuitem value="#{m.users_title}" url="/view/users.xhtml" />
+                        <p:menuitem value="#{userController.model.username}" url="#" />
                     </p:breadCrumb>
                 </div>
 

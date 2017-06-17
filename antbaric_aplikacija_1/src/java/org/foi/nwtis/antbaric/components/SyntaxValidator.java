@@ -17,7 +17,7 @@ public class SyntaxValidator {
         return Stream.of(
             "USER (.*); PASSWD (.*);() (PAUSE|START|STOP|STATUS);",
             "USER (.*); PASSWD (.*); (IoT_Master) (START|STOP|WORK|WAIT|LOAD|CLEAR|STATUS|LIST);",
-            "USER (.*); PASSWD (.*); (IoT) (\\d{1,6}) (ADD\\s(.{1,})\\s(.{1,})|WORK|WAIT|REMOVE|STATUS)"
+            "USER (.*); PASSWD (.*); (IoT) (\\d{1,6}) (ADD\\s(.{1,})\\s(.{1,})|WORK|WAIT|REMOVE|STATUS);"
         ).collect(Collectors.toList());
     }
 

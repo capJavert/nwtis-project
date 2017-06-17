@@ -1,13 +1,11 @@
 package org.foi.nwtis.antbaric.controllers;
 
 import javax.inject.Named;
-import javax.enterprise.context.SessionScoped;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Locale;
 import javax.annotation.PostConstruct;
 import javax.enterprise.context.RequestScoped;
-import javax.faces.component.UIViewRoot;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.servlet.http.HttpServletRequest;
@@ -53,7 +51,7 @@ public class LocalizationController implements Serializable {
     }
 
     public void setSelectedLanguage(String selectedLang) {
-        this.selectedLanguage = selectedLang;
+        LocalizationController.selectedLanguage = selectedLang;
         Locale localLanguage = new Locale(selectedLang);
         FacesContext.getCurrentInstance().getViewRoot().setLocale(localLanguage);
     }
