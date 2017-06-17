@@ -20,6 +20,7 @@ public class Log extends Model<Log> {
     private Integer id;
     public String korisnik;
     public String data;
+    public String url;
     public String ipadresa;
     public Long trajanje;
     public String vrijeme;
@@ -50,9 +51,22 @@ public class Log extends Model<Log> {
         return trajanje;
     }
 
-    public Boolean write(String user, String command, String ip, Long trajanje) throws SQLException {
+    public String getUrl() {
+        return url;
+    }
+
+    public Boolean writeSocketLog(String user, String command, String ip, Long trajanje) throws SQLException {
         this.korisnik = user;
         this.data = command;
+        this.ipadresa = ip;
+        this.trajanje = trajanje;
+
+        return this.create();
+    }
+
+    public Boolean writeUrlLog(String user, String url, String ip, Long trajanje) throws SQLException {
+        this.korisnik = user;
+        this.url = url;
         this.ipadresa = ip;
         this.trajanje = trajanje;
 

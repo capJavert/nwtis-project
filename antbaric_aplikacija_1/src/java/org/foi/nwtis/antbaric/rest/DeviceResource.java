@@ -6,14 +6,19 @@
 package org.foi.nwtis.antbaric.rest;
 
 import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.Produces;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.PUT;
 import javax.ws.rs.DELETE;
+import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import org.foi.nwtis.antbaric.helpers.JsonHelper;
 import org.foi.nwtis.antbaric.models.Device;
+import org.foi.nwtis.antbaric.models.Log;
 
 /**
  * REST Web Service
@@ -21,7 +26,7 @@ import org.foi.nwtis.antbaric.models.Device;
  * @author javert
  */
 public class DeviceResource {
-    
+
     private final String id;
 
     /**
@@ -50,10 +55,16 @@ public class DeviceResource {
      */
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    public String getJson() {
+    public String getJson(@Context HttpServletRequest requestContext) {
+        try {
+            new Log().writeUrlLog("PUBLIC", "GET /devices/" + this.id, requestContext.getRemoteAddr(), null);
+        } catch (SQLException ex) {
+            Logger.getLogger(DeviceResource.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
         try {
             Device device = (Device) new Device().findOne(Integer.parseInt(this.id));
-            
+
             return device != null ? JsonHelper.encode(device) : JsonHelper.encode(new ErrorREST("Not found"));
         } catch (SQLException ex) {
             return JsonHelper.encode(new ErrorREST(ex.getMessage()));
@@ -69,22 +80,28 @@ public class DeviceResource {
     @PUT
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public String putJson(String content) {
+    public String putJson(String content, @Context HttpServletRequest requestContext) {
         Device device = JsonHelper.decode(content, Device.class);
         device.status = 0;
-        
+
+        try {
+            new Log().writeUrlLog("PUBLIC", "PUT /devices/" + this.id, requestContext.getRemoteAddr(), null);
+        } catch (SQLException ex) {
+            Logger.getLogger(DeviceResource.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
         try {
             Device check = new Device().findOne(Integer.parseInt(this.id));
             if (check != null) {
                 device.setOldId(check.getPrimaryKey());
                 device.update();
-                
+
                 return "1";
             }
         } catch (SQLException ex) {
             return JsonHelper.encode(new ErrorREST(ex.getMessage()));
         }
-        
+
         return "0";
     }
 

@@ -6,13 +6,18 @@
 package org.foi.nwtis.antbaric.rest;
 
 import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.Produces;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.PUT;
 import javax.ws.rs.DELETE;
+import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import org.foi.nwtis.antbaric.helpers.JsonHelper;
+import org.foi.nwtis.antbaric.models.Log;
 import org.foi.nwtis.antbaric.models.User;
 
 /**
@@ -50,7 +55,13 @@ public class UserResource {
      */
     @GET
     @Produces(javax.ws.rs.core.MediaType.APPLICATION_JSON)
-    public String getJson() {
+    public String getJson(@Context HttpServletRequest requestContext) {
+        try {
+            new Log().writeUrlLog("PUBLIC", "GET /users/" + this.id, requestContext.getRemoteAddr(), null);
+        } catch (SQLException ex) {
+            Logger.getLogger(UserResource.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
         try {
             User user = (User) new User().findOne("username", this.id);
 
@@ -64,25 +75,31 @@ public class UserResource {
      * PUT method for updating or creating an instance of UserResource
      *
      * @param content representation for the resource
-     * @return 
+     * @return
      */
     @PUT
     @Consumes(javax.ws.rs.core.MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public String putJson(String content) {
+    public String putJson(String content, @Context HttpServletRequest requestContext) {
         User user = JsonHelper.decode(content, User.class);
-        System.out.println(content);
+
+        try {
+            new Log().writeUrlLog("PUBLIC", "PUT /users/" + this.id, requestContext.getRemoteAddr(), null);
+        } catch (SQLException ex) {
+            Logger.getLogger(UserResource.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
         try {
             User check = new User().findOne(user.getPrimaryKey());
-            if(check != null && check.username.equals(this.id)) {
+            if (check != null && check.username.equals(this.id)) {
                 user.update();
-                
+
                 return "1";
             }
         } catch (SQLException ex) {
             return JsonHelper.encode(new ErrorREST(ex.getMessage()));
         }
-        
+
         return "0";
     }
 

@@ -249,7 +249,7 @@ public class HandlerThread extends Thread {
                 outputStream.write("ERR 10".getBytes());
             }
 
-            new Log().write(this.username, command.toString(), this.socket.getRemoteSocketAddress().toString(), System.currentTimeMillis() - this.workTime);
+            new Log().writeSocketLog(this.username, command.toString(), this.socket.getRemoteSocketAddress().toString(), System.currentTimeMillis() - this.workTime);
             outputStream.flush();
         } catch (IOException | SQLException ex) {
             Logger.getLogger(HandlerThread.class.getName()).log(Level.SEVERE, null, ex);

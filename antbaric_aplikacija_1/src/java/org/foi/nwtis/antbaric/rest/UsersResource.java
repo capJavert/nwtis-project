@@ -9,6 +9,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.UriInfo;
 import javax.ws.rs.PathParam;
@@ -17,8 +18,8 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
-import javax.ws.rs.core.Response;
 import org.foi.nwtis.antbaric.helpers.JsonHelper;
+import org.foi.nwtis.antbaric.models.Log;
 import org.foi.nwtis.antbaric.models.User;
 
 /**
@@ -40,11 +41,18 @@ public class UsersResource {
 
     /**
      * Retrieves representation of an instance of User
+     *
      * @return an instance of String
      */
     @GET
     @Produces(javax.ws.rs.core.MediaType.APPLICATION_JSON)
-    public String getJson() {
+    public String getJson(@Context HttpServletRequest requestContext) {
+        try {
+            new Log().writeUrlLog("PUBLIC", "GET /users", requestContext.getRemoteAddr(), null);
+        } catch (SQLException ex) {
+            Logger.getLogger(UsersResource.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
         try {
             ArrayList<User> users = new User().findAll();
             return JsonHelper.encode(users);
@@ -55,15 +63,22 @@ public class UsersResource {
 
     /**
      * POST method for creating an instance of UserResource
+     *
      * @param content representation for the new resource
      * @return an HTTP response with content of the created resource
      */
     @POST
     @Consumes(javax.ws.rs.core.MediaType.APPLICATION_JSON)
     @Produces(javax.ws.rs.core.MediaType.APPLICATION_JSON)
-    public String postJson(String content) {
+    public String postJson(String content, @Context HttpServletRequest requestContext) {
         User user = JsonHelper.decode(content, User.class);
-        
+
+        try {
+            new Log().writeUrlLog("PUBLIC", "POST /users", requestContext.getRemoteAddr(), null);
+        } catch (SQLException ex) {
+            Logger.getLogger(UsersResource.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
         try {
             return user.create() ? "1" : "0";
         } catch (SQLException ex) {
@@ -73,8 +88,9 @@ public class UsersResource {
 
     /**
      * Sub-resource locator method for {id}
+     *
      * @param id
-     * @return 
+     * @return
      */
     @Path("{korisnickoIme}")
     public UserResource getUserResource(@PathParam("korisnickoIme") String id) {
