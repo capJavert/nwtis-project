@@ -8,6 +8,7 @@ package org.foi.nwtis.antbaric.models;
 import java.lang.reflect.Field;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -136,4 +137,35 @@ public class Log extends Model<Log> {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
+    public ArrayList<Log> findAllWithUrl() throws SQLException {
+        this.setGetAllWithUrlStatement();
+
+        try {
+            return this.mapResults(this.preparedStatement.executeQuery());
+        } catch (SQLException ex) {
+            Logger.getLogger(Model.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+        return new ArrayList<>();
+    }
+
+    public ArrayList<Log> findAllWithData() throws SQLException {
+        this.setGetAllWithDataStatement();
+
+        try {
+            return this.mapResults(this.preparedStatement.executeQuery());
+        } catch (SQLException ex) {
+            Logger.getLogger(Model.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+        return new ArrayList<>();
+    }
+
+    protected void setGetAllWithUrlStatement() throws SQLException {
+        this.preparedStatement = this.connection.prepareStatement("SELECT * FROM " + this.tableName + " WHERE url IS NOT NULL");
+    }
+
+    protected void setGetAllWithDataStatement() throws SQLException {
+        this.preparedStatement = this.connection.prepareStatement("SELECT * FROM " + this.tableName + " WHERE data IS NOT NULL");
+    }
 }

@@ -27,7 +27,7 @@ public class WSLogController extends Controller<Log> {
         this.pagination = Integer.parseInt(config.dajPostavku("ui.perPage"));
 
         try {
-            this.list = new Log().findAll();
+            this.list = new Log().findAllWithUrl();
         } catch (SQLException ex) {
             Logger.getLogger(WSLogController.class.getName()).log(Level.SEVERE, null, ex);
         }
