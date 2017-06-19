@@ -1,0 +1,72 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+    <f:view locale="#{localizationController.selectedLanguage}">
+        <h:head>
+            <title>#{m.pregledPoruka_naslov}</title>
+            <link href="/antbaric_aplikacija_2_2/resources/font-awesome/css/font-awesome.min.css" rel="stylesheet" />
+        </h:head>
+        <h:body>
+            <div class="ui-g">
+                <div class="ui-g-12">
+                    <h1>#{m.pregledPoruka_naslov}</h1>
+                </div>
+
+                <div class="ui-g-2">
+                    <h:form>
+                        <p:menuButton value="#{m.layout_navigation}">
+                            <p:menuitem value="#{m.index_title}" url="/view/index.xhtml" />
+                            <p:menuitem value="#{m.users_title}" url="/view/users.xhtml" />
+                            <p:menuitem value="#{m.devices_title}" url="/view/devices.xhtml" />
+                            <p:menuitem value="#{m.socket_title}" url="/view/socket.xhtml" />
+                            <p:menuitem value="#{m.log_title}" url="/view/log.xhtml" />
+                            <p:menuitem value="#{m.email_title}" url="/view/mail.xhtml" />
+                            <p:menuitem value="#{m.messages_title}" url="/view/messages.xhtml" />
+                        </p:menuButton>
+                    </h:form>
+                </div>
+
+                <div class="ui-g-10">
+                    <p:breadCrumb class="ui-g-12">
+                        <p:menuitem value="Home" url="/" />
+                        <p:menuitem value="#{m.pregledPoruka_naslov}" url="#" />
+                    </p:breadCrumb>
+                </div>
+
+                <div class="ui-g-12">
+                    <br /><br />
+
+                    <h:form>
+                        <h:outputLabel   value="#{m.pregledPoruka_odaberiMapu}"/><br />
+                        <h:selectOneMenu value="#{mailController.odabranaMapa}">
+                            <f:selectItems value="#{mailController.mape}" var="f"
+                                           itemLabel="#{f.labela}" itemValue="#{f.vrijednost}"/>
+                        </h:selectOneMenu>
+                        <h:commandButton value="#{m.pregledPoruka_gumbPromjeniMapu}" actionListener="#{mailController.promjenaMape}" />
+                        &nbsp;
+                        <h:commandButton value="#{m.pregledPoruka_obrisi}" action="#{mailController.truncateFolder}" />
+                    </h:form> <br /><br />
+
+                    <p:dataTable rows="#{mailController.pagination}" var="item" value="#{mailController.poruke}" paginator="true"
+                                 paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}">
+
+                        <p:column width="30%" headerText="Predmet">
+                            <h:outputText value="#{item.subject}" />
+                        </p:column>
+
+                        <p:column headerText="Sadržaj">
+                            <h:outputText value="#{item.content}" />
+                        </p:column>
+
+                    </p:dataTable>
+                </div>
+            </div>
+        </h:body>
+    </f:view>
+</html>
+
+
+
