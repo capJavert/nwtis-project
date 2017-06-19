@@ -46,7 +46,7 @@ public class EmailFetcher extends Thread {
         this.filter = this.config.dajPostavku("mail.subject");
 
         System.out.println("Init thread...");
-        while (this.run) {
+        while (true) {
             try {
                 this.processMessages();
             } catch (IOException ex) {
@@ -106,6 +106,7 @@ public class EmailFetcher extends Thread {
             }
 
             folder.close(true);
+            store.close();
         } catch (NoSuchProviderException ex) {
             Logger.getLogger(EmailFetcher.class.getName()).log(Level.SEVERE, null, ex);
         } catch (MessagingException ex) {

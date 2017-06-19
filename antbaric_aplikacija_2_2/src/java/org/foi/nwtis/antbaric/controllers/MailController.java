@@ -184,6 +184,14 @@ public class MailController extends Controller<Message> {
             this.ukupnoPorukaMapa = folder.getMessageCount();
             
              folder.setFlags(folder.getMessages(), new Flags(Flags.Flag.DELETED), true);
+             
+             try {
+                folder.close(true); 
+                store.close();
+             } catch(MessagingException ex) { 
+                  Logger.getLogger(MailController.class.getName()).log(Level.SEVERE, null, ex);
+             }
+             
         } catch (NoSuchProviderException ex) {
             Logger.getLogger(MailController.class.getName()).log(Level.SEVERE, null, ex);
         } catch (MessagingException ex) {
@@ -193,8 +201,6 @@ public class MailController extends Controller<Message> {
 
     public void promjenaMape() throws IOException {
         request.getSession().setAttribute("mapa", this.odabranaMapa);
-        
-         externalContext.redirect("/antbaric_aplikacija_2_2/view/mail.xhtml");
     }
 
     public int getUkupnoPorukaMapa() {

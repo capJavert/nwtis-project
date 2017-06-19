@@ -5,6 +5,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
+import javax.faces.bean.RequestScoped;
 import javax.servlet.ServletContext;
 import org.foi.nwtis.antbaric.konfiguracije.Konfiguracija;
 import org.foi.nwtis.antbaric.models.User;
@@ -15,6 +16,7 @@ import org.foi.nwtis.antbaric.web.listeners.ApplicationListener;
  * @author javert
  */
 @ManagedBean(name = "userController")
+@RequestScoped
 public class UserController extends Controller<User> {
 
     @PostConstruct

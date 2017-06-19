@@ -48,6 +48,7 @@ public class Server extends Thread {
         int port = Integer.parseInt(config.dajPostavku("socket.port"));
 
         status = new Status();
+        status.set("START");
 
         try {
             this.socket = new ServerSocket(port);
