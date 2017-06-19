@@ -98,7 +98,6 @@ public class MailController extends Controller<Message> {
     }
 
     void preuzmiMape() {
-        //todo: 
         // Start the session
         java.util.Properties properties = System.getProperties();
         properties.put("mail.smtp.host", posluzitelj);

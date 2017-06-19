@@ -9,10 +9,9 @@ import java.util.logging.Logger;
 
 public class Client {
 
-    // TODO: replace with real server name and port
     private static final String SERVER_NAME = "localhost";
     private static final Integer SERVER_PORT = 9966;
-
+    
     public String run(String command) {
         Socket socket = null;
         InputStream inputStream = null;

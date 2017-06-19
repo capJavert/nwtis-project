@@ -24,7 +24,7 @@ import org.foi.nwtis.antbaric.web.listeners.ApplicationListener;
  */
 public class MeteoFetcher extends Thread {
 
-    private Boolean run = false;
+    private Boolean run = true;
     private Boolean paused = false;
 
     public void setPaused(Boolean paused) {
