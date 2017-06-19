@@ -37,7 +37,7 @@
                 </div>
 
                 <h:panelGroup id="page-crud">
-                    <h:panelGroup style="display:#{!(deviceController.editing)?'block':'none'};" id="devices-list" class="ui-g-12">
+                    <h:panelGroup style="display:#{!(deviceController.editing)?'block':'none'};" id="device-list" class="ui-g-12">
                         <br /><br />
                         <p:commandButton type="button" value="#{m.layout_add}">
                             <f:ajax listener="#{deviceController.setEditing(0)}" render="page-crud" />
@@ -66,7 +66,7 @@
                             </p:column>
                             <p:column width="5%">
                                 <p:commandButton id="withIcon" icon=" ui-icon-pencil">
-                                    <f:ajax listener="#{deviceController.setEditing(item.primaryKey)}" render="devices-list page-form" />
+                                    <f:ajax listener="#{deviceController.setEditing(item.primaryKey)}" render="device-list page-form meteo-data" />
                                 </p:commandButton>
                             </p:column>
                         </p:dataTable>
@@ -88,22 +88,119 @@
                             <label>#{m.devices_lng}</label><br />
                             <p:inputText id="device-lng" value="#{deviceController.longitude}" /><br /><br />
 
-                            <p:commandButton style="display:#{(deviceController.isNew)?'block':'none'};" value="#{m.layout_save}">
-                                <f:ajax listener="#{deviceController.create}" execute="device-id device-name device-lat device-lng" render="devices-list page-form" />
+                            <h:panelGroup rendered="#{!deviceController.isNew}">
+                                <p:outputLabel>#{m.devices_address}</p:outputLabel><br />
+                                <p:inputText readonly="true" id="device-address" value="#{deviceController.deviceAddress}" /><br /><br />
+                            </h:panelGroup>
+
+                            <p:commandButton value="#{m.layout_save}">
+                                <f:ajax listener="#{deviceController.update}" execute="device-is-new device-id device-name device-lat device-lng" />
+                            </p:commandButton>&nbsp; 
+
+                            <p:commandButton value="#{m.layout_back}">
+                                <f:ajax listener="#{deviceController.goBack}" execute="device-id device-name device-lat device-lng" render="page-form meteo-data device-list" />
                             </p:commandButton>
 
-                            <p:commandButton style="display:#{!(deviceController.isNew)?'block':'none'};" value="#{m.layout_save}">
-                                <f:ajax listener="#{deviceController.update}" execute="device-id device-name device-lat device-lng" render="devices-list page-form"/>
-                            </p:commandButton>
+                            <p:inputText style="visibility: hidden" id="device-is-new" value="#{deviceController.isNew}" />
 
                         </h:form>
                     </h:panelGroup>
                 </h:panelGroup>
 
+                <h:panelGroup id="meteo-data" style="display:#{(deviceController.editing)?'block':'none'};">
+                    <br /><br />
+
+                    <h2>#{m.devices_lastmeteo}</h2>
+                    <h:panelGroup class="ui-g-12">
+                        <p:dataTable rendered="#{deviceController.lastMeteoData.size() gt 0}" rows="#{deviceController.pagination}" var="item" value="#{deviceController.lastMeteoData}" paginator="false"
+                                     paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}">
+                            <p:column headerText="ID">
+                                <h:outputText value="#{item.id}" />
+                            </p:column>
+
+                            <p:column headerText="#{m.devices_lat}">
+                                <h:outputText value="#{item.latitude}" />
+                            </p:column>
+                            <p:column headerText="#{m.devices_lng}">
+                                <h:outputText value="#{item.longitude}" />
+                            </p:column>
+                            <p:column headerText="#{m.devices_weather}">
+                                <h:outputText value="#{item.vrijeme}" />
+                            </p:column>
+                            <p:column headerText="#{m.devices_wdescription}">
+                                <h:outputText value="#{item.vrijemeOpis}" />
+                            </p:column>
+                            <p:column headerText="#{m.devices_temp}">
+                                <h:outputText value="#{item.temp}" />
+                            </p:column>
+                            <p:column headerText="#{m.devices_min}">
+                                <h:outputText value="#{item.tempMin}" />
+                            </p:column>
+                            <p:column headerText="#{m.devices_max}">
+                                <h:outputText value="#{item.tempMax}" />
+                            </p:column>
+                            <p:column headerText="#{m.devices_humidity}">
+                                <h:outputText value="#{item.vlaga}" />
+                            </p:column>
+                            <p:column headerText="#{m.devices_pressure}">
+                                <h:outputText value="#{item.tlak}" />
+                            </p:column>
+                            <p:column headerText="#{m.devices_wind}">
+                                <h:outputText value="#{item.vjetar}, #{item.vjetarSmjer} &rarr;" />
+                            </p:column>
+                            <p:column headerText="#{m.devices_downloaded}">
+                                <h:outputText value="#{item.preuzeto}" />
+                            </p:column>
+
+                        </p:dataTable>
+                    </h:panelGroup> <br /><br />
+
+                    <h2>#{m.devices_livemeteo}</h2>
+                    <h:panelGroup class="ui-g-12">
+                        <p:dataTable rendered="#{deviceController.liveMeteoData.size() gt 0}" rows="#{deviceController.pagination}" var="item" value="#{deviceController.liveMeteoData}" paginator="false"
+                                     paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}">
+                            <p:column headerText="ID">
+                                <h:outputText value="#{item.id}" />
+                            </p:column>
+
+                            <p:column headerText="#{m.devices_lat}">
+                                <h:outputText value="#{item.latitude}" />
+                            </p:column>
+                            <p:column headerText="#{m.devices_lng}">
+                                <h:outputText value="#{item.longitude}" />
+                            </p:column>
+                            <p:column headerText="#{m.devices_weather}">
+                                <h:outputText value="#{item.vrijeme}" />
+                            </p:column>
+                            <p:column headerText="#{m.devices_wdescription}">
+                                <h:outputText value="#{item.vrijemeOpis}" />
+                            </p:column>
+                            <p:column headerText="#{m.devices_temp}">
+                                <h:outputText value="#{item.temp}" />
+                            </p:column>
+                            <p:column headerText="#{m.devices_min}">
+                                <h:outputText value="#{item.tempMin}" />
+                            </p:column>
+                            <p:column headerText="#{m.devices_max}">
+                                <h:outputText value="#{item.tempMax}" />
+                            </p:column>
+                            <p:column headerText="#{m.devices_humidity}">
+                                <h:outputText value="#{item.vlaga}" />
+                            </p:column>
+                            <p:column headerText="#{m.devices_pressure}">
+                                <h:outputText value="#{item.tlak}" />
+                            </p:column>
+                            <p:column headerText="#{m.devices_wind}">
+                                <h:outputText value="#{item.vjetar}, #{item.vjetarSmjer} &rarr;" />
+                            </p:column>
+                            <p:column headerText="#{m.devices_downloaded}">
+                                <h:outputText value="#{item.preuzeto}" />
+                            </p:column>
+
+                        </p:dataTable>
+                    </h:panelGroup> <br /><br />
+                </h:panelGroup>
             </div>
         </h:body>
     </f:view>
 </html>
-
-
-
