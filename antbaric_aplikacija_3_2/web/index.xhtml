@@ -1,0 +1,42 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+    <f:view locale="hr_HR">
+        <h:head>
+            <title>#{m.login_title}</title>
+        </h:head>
+        <h:body>
+            <div class="ui-g-12">
+                <h1>#{m.login_title}</h1>
+            </div>
+
+            <div class="ui-g-10">
+                <p:breadCrumb class="ui-g-12">
+                    <p:menuitem value="Home" url="/" />
+                    <p:menuitem value="#{m.login_title}" url="#" />
+                </p:breadCrumb>
+            </div>
+            <br /><br />
+
+            <div style="width: 100%; text-align:center;" class="ui-g-12">
+                <h:form>
+                    <h:outputText value="#{m.users_username} " /> <br />
+                    <p:inputText id="username" value="#{loginController.username}"></p:inputText>
+                    <p:message for="username"></p:message>
+                    <br></br>
+
+                    <h:outputText value="#{m.users_password} " /> <br />
+                    <p:password id="password" value="#{loginController.password}"></p:password>
+                    <p:message for="password"></p:message>
+                    <br></br>
+
+                    <p:commandButton action="#{loginController.signIn()}"
+                                     value="Login"></p:commandButton>
+                </h:form>
+            </div>
+        </h:body>
+    </f:view>
+</html>

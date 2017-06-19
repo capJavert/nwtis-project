@@ -1,0 +1,46 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+    <f:view locale="hr_HR">
+        <h:head>
+            <title>#{m.socket_title}</title>
+            <link href="/antbaric_aplikacija_3_2/resources/font-awesome/css/font-awesome.min.css" rel="stylesheet" />
+        </h:head>
+        <h:body>
+            <div class="ui-g">
+                <div class="ui-g-12">
+                    <h1>#{m.socket_title}</h1>
+                </div>
+
+                <div class="ui-g-10">
+                    <p:breadCrumb class="ui-g-12">
+                        <p:menuitem value="Home" url="/" />
+                        <p:menuitem value="#{m.socket_title}" url="#" />
+                    </p:breadCrumb>
+                </div>
+
+                <div class="ui-g-12">
+                    <br /><br />
+                    <h:form id="page-form">
+                        <h:selectOneMenu id="select-command" value="#{socketController.command}">
+                            <f:selectItems value="#{socketController.commands}" var="f"
+                                           itemLabel="#{f.labela}" itemValue="#{f.vrijednost}"/>
+                        </h:selectOneMenu><br /><br />
+
+                        <p:commandButton value="#{m.layout_save}">
+                            <f:ajax listener="#{socketController.runClient}" execute="select-command device-id device-name device-address" render="page-form" />
+                        </p:commandButton><br /><br />
+
+                        <p:inputTextarea value="#{socketController.response}" rows="6" cols="60" />
+                    </h:form>
+                </div>
+            </div>
+        </h:body>
+    </f:view>
+</html>
+
+
+

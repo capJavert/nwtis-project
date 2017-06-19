@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE properties SYSTEM "http://java.sun.com/dtd/properties.dtd">
+<properties>
+<comment>NWTIS konfiguracija</comment>
+<entry key="server.database">jdbc:mysql://localhost:3306/</entry>
+<entry key="admin.username">root</entry>
+<entry key="admin.password">cokolada</entry>
+<entry key="admin.database">nwtis_antbaric_bp_1</entry>
+<entry key="user.username">root</entry>
+<entry key="user.password">cokolada</entry>
+<entry key="user.database">nwtis_antbaric_bp_1</entry>
+<entry key="driver.database.odbc">sun.jdbc.odbc.JdbcOdbcDriver</entry>
+<entry key="driver.database.mysql">com.mysql.jdbc.Driver</entry>
+<entry key="driver.database.derby">org.apache.derby.jdbc.ClientDriver</entry>
+<entry key="driver.database.postgresql">org.postgresql.Driver</entry>
+
+<entry key="mail.server">127.0.0.1</entry>
+<entry key="mail.port">143</entry>
+<entry key="mail.subject">NWTiS projekt</entry>
+<entry key="mail.from">servis@localhost</entry>
+<entry key="mail.to">servis@nwtis.nastava.foi.hr</entry>
+<entry key="mail.usernameThread">servis@nwtis.nastava.foi.hr</entry>
+<entry key="mail.passwordThread">123456~</entry>
+
+<entry key="ws.username">antbaric</entry>
+<entry key="ws.password">s99BW</entry>
+
+<entry key="ui.perPage">10</entry>
+
+</properties>
